@@ -1,11 +1,13 @@
 import json
 import argparse
 from flask import Flask, request, abort
+from flask_compress import Compress
 from backend.model import Model
 
 
 model = Model()
 app = Flask(__name__)
+Compress(app)
 
 
 @app.route("/", methods=["GET"])
