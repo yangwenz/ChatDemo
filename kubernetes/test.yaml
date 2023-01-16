@@ -18,6 +18,7 @@ spec:
       containers:
         - name: chatdemo
           image: "chatdemo:v1"
+          command: ["/opt/start.sh"]
           ports:
             - containerPort: 8080
           livenessProbe:
