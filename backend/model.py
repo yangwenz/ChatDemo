@@ -31,6 +31,10 @@ class BlenderBotModel(BaseModel):
         return outputs[0][4:-4]
 
 
+class GPTJ(BaseModel):
+    pass
+
+
 class ModelFactory:
 
     @staticmethod
@@ -39,3 +43,5 @@ class ModelFactory:
             return TestModel
         elif model_cls in ["blender", "blenderbot"]:
             return BlenderBotModel
+        elif model_cls in ["gptj", "gpt-j"]:
+            return GPTJ
