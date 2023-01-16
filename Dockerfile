@@ -15,4 +15,5 @@ RUN pip install --no-cache-dir -r /opt/requirements.txt
 WORKDIR /opt
 
 EXPOSE 8080
-EXPOSE 8081
+RUN chmod +x /opt/start.sh
+ENTRYPOINT ["/opt/start.sh"]
