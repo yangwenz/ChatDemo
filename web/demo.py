@@ -1,3 +1,4 @@
+import os
 import requests
 import streamlit as st
 from web.chat import message
@@ -13,7 +14,7 @@ if "generated" not in st.session_state:
 if "past" not in st.session_state:
     st.session_state["past"] = []
 
-URL = "http://localhost:8081/chat"
+URL = os.getenv("CHATBOT_SERVER_URL", "http://localhost:8081/chat")
 
 
 def query(payload):
