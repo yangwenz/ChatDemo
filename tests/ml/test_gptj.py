@@ -8,8 +8,8 @@ def test():
         "previously unexplored valley, in the Andes Mountains. Even more surprising to the "
         "researchers was the fact that the unicorns spoke perfect English."
     )
-    model = AutoModelForCausalLM.from_pretrained("EleutherAI/gpt-j-1B", torch_dtype=torch.float16)
-    tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-1B")
+    model = AutoModelForCausalLM.from_pretrained("EleutherAI/gpt-j-6B", torch_dtype=torch.float16)
+    tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6B")
     input_ids = tokenizer(prompt, return_tensors="pt").input_ids
     gen_tokens = model.generate(
         input_ids,
