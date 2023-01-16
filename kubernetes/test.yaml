@@ -25,11 +25,12 @@ spec:
             httpGet:
               path: /
               port: 8081
-            initialDelaySeconds: 1
+            initialDelaySeconds: 120
           readinessProbe:
             httpGet:
               path: /
               port: 8081
+            initialDelaySeconds: 120
 
 ---
 apiVersion: v1
