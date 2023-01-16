@@ -37,7 +37,6 @@ spec:
             httpGet:
               path: /
               port: 8081
-              initialDelaySeconds: 1
           resources:
             limits:
               nvidia.com/gpu: 1
