@@ -17,7 +17,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: chatdemo
-          image: "gcr.io/salesforce-research-internal/chatdemo"
+          image: "chatdemo:v1"
           ports:
             - containerPort: 8080
           livenessProbe:
