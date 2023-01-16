@@ -15,4 +15,4 @@ WORKDIR /opt
 
 EXPOSE 8080
 RUN chmod +x /opt/start.sh
-ENTRYPOINT ["/opt/start.sh"]
+# ENTRYPOINT ["/opt/start.sh"]
