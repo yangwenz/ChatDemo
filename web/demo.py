@@ -13,9 +13,11 @@ if "generated" not in st.session_state:
 if "past" not in st.session_state:
     st.session_state["past"] = []
 
+URL = "http://localhost:8081/chat"
+
 
 def query(payload):
-    response = requests.post("http://localhost:8081/chat", json=payload)
+    response = requests.post(URL, json=payload)
     return response.json()
 
 
