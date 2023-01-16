@@ -5,4 +5,4 @@ class Model:
         self.model_path = model_path
 
     def predict(self, inputs):
-        return "Test"
+        return "Test test"

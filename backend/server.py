@@ -1,6 +1,7 @@
+import json
 import argparse
 from flask import Flask, request, abort
-from .model import Model
+from backend.model import Model
 
 
 model = Model()
@@ -20,7 +21,7 @@ def chat():
         outputs = model.predict(request.json)
     except Exception:
         outputs = "ERROR"
-    return outputs, 200
+    return json.dumps({"generated_text": outputs}), 200
 
 
 def main():
