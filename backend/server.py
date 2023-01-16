@@ -1,7 +1,9 @@
 import argparse
 from flask import Flask, request, abort
+from .model import Model
 
 
+model = Model()
 app = Flask(__name__)
 
 
@@ -14,7 +16,11 @@ def ping():
 def chat():
     if not request.json:
         abort(400)
-    return request.json, 200
+    try:
+        outputs = model.predict(request.json)
+    except Exception:
+        outputs = "ERROR"
+    return outputs, 200
 
 
 def main():
