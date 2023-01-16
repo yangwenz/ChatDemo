@@ -8,7 +8,11 @@ class BaseModel:
         return "Test test"
 
 
-class TestModel:
+class TestModel(BaseModel):
+    pass
+
+
+class BlenderBotModel(BaseModel):
     pass
 
 
@@ -18,3 +22,5 @@ class ModelFactory:
     def create(model_cls="test"):
         if model_cls == "test":
             return TestModel
+        elif model_cls in ["blender", "blenderbot"]:
+            return BlenderBotModel
