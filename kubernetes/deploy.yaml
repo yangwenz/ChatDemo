@@ -56,7 +56,6 @@ spec:
           value: "1"
           effect: "NoSchedule"
 ---
-
 apiVersion: v1
 kind: Service
 metadata:

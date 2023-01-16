@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sfr-chat-a100
+  labels:
+    app: chat-a100
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat-a100
+  template:
+    metadata:
+      labels:
+        app: chat-a100
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: chatdemo
+          image: "gcr.io/salesforce-research-internal/chatdemo"
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8081
+            initialDelaySeconds: 1
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8081
+              initialDelaySeconds: 1
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sfr-chat-a100
+spec:
+  type: LoadBalancer
+  selector:
+    app: chat-a100
+  ports:
+    - name: chat-a100
+      port: 8080
+      targetPort: 8080
