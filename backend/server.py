@@ -1,5 +1,5 @@
 import argparse
-from flask import Flask
+from flask import Flask, request, abort
 
 
 app = Flask(__name__)
@@ -8,6 +8,13 @@ app = Flask(__name__)
 @app.route("/", methods=["GET"])
 def ping():
     return "OK", 200
+
+
+@app.route("/chat", methods=["POST"])
+def chat():
+    if not request.json:
+        abort(400)
+    return request.json, 200
 
 
 def main():
