@@ -15,6 +15,7 @@ spec:
       labels:
         app: chat-a100
     spec:
+      restartPolicy: Always
       volumes:
         - name: sfr-home-pv-wenzhuo-yang
           persistentVolumeClaim:
@@ -31,7 +32,7 @@ spec:
             limits:
               nvidia.com/gpu: 1
               cpu: "23"
-              memory: 150G
+              memory: 75G
           volumeMounts:
             - name: sfr-home-pv-wenzhuo-yang
               mountPath: "/export/home"
