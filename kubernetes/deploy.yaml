@@ -28,6 +28,10 @@ spec:
           image: "gcr.io/salesforce-research-internal/chatdemo"
           ports:
             - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8081
           resources:
             limits:
               nvidia.com/gpu: 1
