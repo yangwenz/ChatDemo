@@ -12,4 +12,4 @@ transformers==4.25.1
 streamlit>=0.63
 flask>=1.1.0
 werkzeug
-
+requests
