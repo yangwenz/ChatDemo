@@ -6,7 +6,7 @@ from backend.model import ModelFactory
 
 
 model_path = ""
-model = ModelFactory.create(model_cls="test")(model_path)
+model = ModelFactory.create(model_cls="blender")(model_path)
 app = Flask(__name__)
 Compress(app)
 

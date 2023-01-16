@@ -28,7 +28,7 @@ class BlenderBotModel(BaseModel):
         input_ids = self.tokenizer([input_text], return_tensors="pt")
         reply_ids = self.model.generate(**input_ids)
         outputs = self.tokenizer.batch_decode(reply_ids)
-        return outputs[0]
+        return outputs[0][4:-4]
 
 
 class ModelFactory:
