@@ -5,8 +5,10 @@ from flask_compress import Compress
 from backend.model import ModelFactory
 
 
+model_cls = "blender"
 model_path = ""
-model = ModelFactory.create(model_cls="blender")(model_path)
+
+model = ModelFactory.create(model_cls=model_cls)(model_path)
 app = Flask(__name__)
 Compress(app)
 
