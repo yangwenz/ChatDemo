@@ -19,8 +19,8 @@ def chat():
         abort(400)
     try:
         outputs = model.predict(request.json)
-    except Exception:
-        outputs = "ERROR"
+    except Exception as e:
+        outputs = f"ERROR: {str(e)}"
     return json.dumps({"generated_text": outputs}), 200
 
 
