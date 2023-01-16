@@ -2,10 +2,11 @@ import json
 import argparse
 from flask import Flask, request, abort
 from flask_compress import Compress
-from backend.model import Model
+from backend.model import ModelFactory
 
 
-model = Model()
+model_path = ""
+model = ModelFactory.create(model_cls="test")(model_path)
 app = Flask(__name__)
 Compress(app)
 

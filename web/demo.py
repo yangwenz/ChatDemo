@@ -6,7 +6,7 @@ st.set_page_config(
     page_title="Streamlit Chat - Demo",
     page_icon=":robot:"
 )
-st.header("Streamlit Chat - Demo")
+st.header("GPTJ Chatbot - Demo")
 
 if "generated" not in st.session_state:
     st.session_state["generated"] = []
