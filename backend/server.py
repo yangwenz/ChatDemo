@@ -1,3 +1,4 @@
+import os
 import json
 import argparse
 from flask import Flask, request, abort
@@ -5,9 +6,8 @@ from flask_compress import Compress
 from backend.model import ModelFactory
 
 
-model_cls = "blender"
-model_path = ""
-
+model_cls = os.getenv("MODEL_CLASS", "blender")
+model_path = os.getenv("MODEL_PATH", "")
 model = ModelFactory.create(model_cls=model_cls)(model_path)
 app = Flask(__name__)
 Compress(app)
