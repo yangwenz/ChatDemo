@@ -6,8 +6,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     wget \
     build-essential \
     curl \
-    git ssh cmake \
-    zip unzip gzip bzip2
+    git ssh
 
 COPY . /opt
 RUN pip install --no-cache-dir -r /opt/requirements.txt
