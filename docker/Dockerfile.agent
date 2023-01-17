@@ -1,0 +1,11 @@
+# FROM nvcr.io/nvidia/pytorch:22.08-py3
+FROM python:3.8-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    wget \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY . /opt
+RUN pip install --no-cache-dir -r /opt/agent/requirements.txt
+
+WORKDIR /opt
