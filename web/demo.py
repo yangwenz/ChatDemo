@@ -17,7 +17,10 @@ if "generated" not in st.session_state:
 if "past" not in st.session_state:
     st.session_state["past"] = []
 
-URL = os.getenv("CHATBOT_SERVER_URL", "http://localhost:8081")
+URL = "http://{host}:{port}".format(
+    host=os.getenv("CHATBOT_SERVER_HOST", "localhost"),
+    port=os.getenv("CHATBOT_SERVER_PORT", 8081)
+)
 TIMEOUT = os.getenv("CHATBOT_SERVER_TIMEOUT", 20)
 
 

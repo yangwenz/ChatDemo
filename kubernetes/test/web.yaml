@@ -21,7 +21,7 @@ spec:
           ports:
             - containerPort: 8080
           env:
-            - name: CHATBOT_SERVER_URL
+            - name: CHATBOT_SERVER_HOST
               value: chat-backend
 
 ---
