@@ -1,7 +1,9 @@
 FROM python:3.8-slim
 
+COPY ./backend/requirements.txt requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
 COPY . /opt
-RUN pip install --no-cache-dir -r /opt/backend/requirements.txt
 RUN chmod +x /opt/backend/run_server.sh
 
 WORKDIR /opt
