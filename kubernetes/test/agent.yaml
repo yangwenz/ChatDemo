@@ -19,9 +19,7 @@ spec:
           image: "chatdemo-agent:v1"
           command: ["/opt/agent/run_celery.sh"]
           env:
-            - name: BROKER_URL
-              value: "redis-master"
-            - name: BACKEND_URL
+            - name: REDIS_HOST
               value: "redis-master"
             - name: MODEL_CLASS
               value: "blender"

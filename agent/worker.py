@@ -3,8 +3,10 @@ import json
 import logging
 from celery import Celery, Task
 
-broker_url = os.environ.get("BROKER_URL", "redis://localhost:6379")
-backend_url = os.environ.get("BACKEND_URL", "redis://localhost:6379")
+redis_host = os.environ.get("REDIS_HOST", "redis://localhost")
+redis_port = os.environ.get("REDIS_PORT", 6379)
+broker_url = f"{redis_host.rstrip('/')}:{redis_port}"
+backend_url = f"{redis_host.rstrip('/')}:{redis_port}"
 
 app = Celery(__name__)
 app.conf.broker_url = broker_url
