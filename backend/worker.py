@@ -12,7 +12,9 @@ backend_url = os.environ.get("BACKEND_URL", "redis://localhost:6379")
 logging.basicConfig(level="INFO")
 logger = logging.getLogger(__name__)
 
-app = Celery(__name__, backend=backend_url, broker=broker_url)
+app = Celery(__name__)
+app.conf.broker_url = broker_url
+app.conf.result_backend = backend_url
 
 
 class GenerationTask(Task):

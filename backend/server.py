@@ -2,7 +2,7 @@ import json
 import argparse
 from flask import Flask, request, abort
 from flask_compress import Compress
-from celery.result import AsyncResult
+from backend.worker import app as celery_app
 from backend.worker import generate_text
 
 app = Flask(__name__)
@@ -26,12 +26,12 @@ def chat():
 @app.route("/chat/<task_id>", methods=["GET"])
 def get_status(task_id):
     try:
-        task = AsyncResult(task_id)
+        task = celery_app.AsyncResult(task_id)
         if not task.ready():
             response = {"task_id": str(task_id), "status": "Processing"}
             status_code = 202
         else:
-            result = task.get()
+            result = json.loads(task.get())
             response = {"task_id": str(task_id), "status": "Success"}
             response.update(result)
             status_code = 200
