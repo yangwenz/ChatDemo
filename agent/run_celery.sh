@@ -1,2 +1,2 @@
 #!/bin/sh
-celery -A agent.worker.app worker --loglevel=info --concurrency=1
+PYTHONPATH=. celery -A agent.worker.app worker --loglevel=info --concurrency=1
