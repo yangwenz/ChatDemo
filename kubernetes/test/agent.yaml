@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-agent
+  labels:
+    app: chat-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat-agent
+  template:
+    metadata:
+      labels:
+        app: chat-agent
+    spec:
+      containers:
+        - name: chat-agent
+          image: "chatdemo-agent:v1"
+          command: [ "/bin/sh" ]
+          args: [ "/opt/agent/run_celery.sh" ]
+          env:
+            - name: BROKER_URL
+              value: "redis-master"
+            - name: BACKEND_URL
+              value: "redis-master"
+            - name: MODEL_CLASS
+              value: "blender"
+            - name: MODEL_PATH
+              value: ""

@@ -15,7 +15,6 @@ spec:
       labels:
         app: chat-a100
     spec:
-      restartPolicy: Always
       volumes:
         - name: sfr-home-pv-wenzhuo-yang
           persistentVolumeClaim:

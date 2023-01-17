@@ -14,7 +14,6 @@ spec:
       labels:
         app: chat-a100
     spec:
-      restartPolicy: Always
       containers:
         - name: chatdemo
           image: "chatdemo:v1"
