@@ -3,7 +3,7 @@ import json
 import argparse
 from flask import Flask, request, abort
 from flask_compress import Compress
-from backend.model import ModelFactory
+from agent.model import ModelFactory
 
 model_cls = os.getenv("MODEL_CLASS", "blender")
 model_path = os.getenv("MODEL_PATH", "")

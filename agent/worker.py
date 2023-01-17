@@ -2,10 +2,7 @@ import os
 import json
 import logging
 from celery import Celery, Task
-from backend.model import ModelFactory
 
-model_cls = os.getenv("MODEL_CLASS", "blender")
-model_path = os.getenv("MODEL_PATH", "")
 broker_url = os.environ.get("BROKER_URL", "redis://localhost:6379")
 backend_url = os.environ.get("BACKEND_URL", "redis://localhost:6379")
 
@@ -33,6 +30,9 @@ class GenerationTask(Task):
         Avoids the need to load model on each task request
         """
         if not self.model:
+            from agent.model import ModelFactory
+            model_cls = os.getenv("MODEL_CLASS", "blender")
+            model_path = os.getenv("MODEL_PATH", "")
             logger.info(f"Loading model {model_cls}")
             self.model = ModelFactory.create(model_cls=model_cls)(model_path)
             logger.info("Model loaded")

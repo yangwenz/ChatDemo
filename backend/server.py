@@ -2,8 +2,8 @@ import json
 import argparse
 from flask import Flask, request, abort
 from flask_compress import Compress
-from backend.worker import app as celery_app
-from backend.worker import generate_text
+from agent.worker import app as celery_app
+from agent.worker import generate_text
 
 app = Flask(__name__)
 Compress(app)
