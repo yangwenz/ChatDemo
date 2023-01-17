@@ -26,6 +26,7 @@ spec:
       containers:
         - name: chatdemo
           image: "gcr.io/salesforce-research-internal/chatdemo"
+          command: ["/opt/start.sh"]
           ports:
             - containerPort: 8080
           livenessProbe:

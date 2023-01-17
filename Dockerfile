@@ -1,5 +1,5 @@
-# FROM nvcr.io/nvidia/pytorch:22.08-py3
-FROM python:3.8-slim
+FROM nvcr.io/nvidia/pytorch:22.08-py3
+# FROM python:3.8-slim
 
 MAINTAINER Yang Wenzhuo <wenzhuo.yang@salesforce.com>
 
@@ -14,4 +14,3 @@ WORKDIR /opt
 
 EXPOSE 8080
 RUN chmod +x /opt/start.sh
-# ENTRYPOINT ["/opt/start.sh"]
