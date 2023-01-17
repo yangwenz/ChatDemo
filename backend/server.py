@@ -2,6 +2,7 @@ import json
 import argparse
 from flask import Flask, request, abort
 from flask_compress import Compress
+from celery.result import AsyncResult
 from backend.worker import generate_text
 
 app = Flask(__name__)
@@ -15,11 +16,28 @@ def ping():
 
 @app.route("/chat", methods=["POST"])
 def chat():
-    if not request.json:
+    try:
+        task = generate_text.delay(request.json)
+        return json.dumps({"task_id": task.id, "status": "Processing"}), 200
+    except Exception:
         abort(400)
-    task = generate_text.delay(request.json)
-    print(task)
-    return json.dumps({"task_id": task.id}), 200
+
+
+@app.route("/chat/<task_id>", methods=["GET"])
+def get_status(task_id):
+    try:
+        task = AsyncResult(task_id)
+        if not task.ready():
+            response = {"task_id": str(task_id), "status": "Processing"}
+            status_code = 202
+        else:
+            result = task.get()
+            response = {"task_id": str(task_id), "status": "Success"}
+            response.update(result)
+            status_code = 200
+        return json.dumps(response), status_code
+    except Exception:
+        abort(400)
 
 
 def main():

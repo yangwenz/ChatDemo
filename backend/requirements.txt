@@ -3,3 +3,4 @@ werkzeug==2.2.2
 requests==2.28.2
 flask_compress==1.13
 celery==5.2.3
+redis==4.1.4

@@ -1,1 +1,1 @@
-celery --app backend.worker.celery worker --loglevel=info --concurrency=1
+celery -A backend.worker.app worker --loglevel=info --concurrency=1
