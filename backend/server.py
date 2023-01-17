@@ -1,9 +1,13 @@
 import json
+import logging
 import argparse
 from flask import Flask, request, abort
 from flask_compress import Compress
 from agent.worker import app as celery_app
 from agent.worker import generate_text
+
+logging.basicConfig(level="INFO")
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 Compress(app)
@@ -37,7 +41,7 @@ def get_status(task_id):
             status_code = 200
         return json.dumps(response), status_code
     except Exception as e:
-        print(e)
+        logger.warning(f"ERROR (task_id = {task_id}): {str(e)}")
         abort(400)
 
 
