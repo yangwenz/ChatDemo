@@ -22,7 +22,7 @@ spec:
             - containerPort: 8080
           env:
             - name: CHATBOT_SERVER_URL
-              value: "chat-backend"
+              value: chat-backend
 
 ---
 apiVersion: v1

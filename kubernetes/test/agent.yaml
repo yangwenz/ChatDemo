@@ -20,7 +20,7 @@ spec:
           command: ["/opt/agent/run_celery.sh"]
           env:
             - name: REDIS_HOST
-              value: "redis-master"
+              value: redis-master
             - name: MODEL_CLASS
               value: "blender"
             - name: MODEL_PATH

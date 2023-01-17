@@ -3,19 +3,19 @@ import json
 import logging
 from celery import Celery, Task
 
-redis_host = os.environ.get("REDIS_HOST", "redis://localhost")
-redis_port = os.environ.get("REDIS_PORT", 6379)
-broker_url = f"{redis_host.rstrip('/')}:{redis_port}"
-backend_url = f"{redis_host.rstrip('/')}:{redis_port}"
+redis_url = "redis://{host}:{port}".format(
+    host=os.getenv("REDIS_HOST", "localhost"),
+    port=os.getenv("REDIS_PORT", 6379)
+)
 
 app = Celery(__name__)
-app.conf.broker_url = broker_url
-app.conf.result_backend = backend_url
+app.conf.broker_url = redis_url
+app.conf.result_backend = redis_url
 
 logging.basicConfig(level="INFO")
 logger = logging.getLogger(__name__)
-logger.info(f"Broker URL: {broker_url}")
-logger.info(f"Backend URL: {backend_url}")
+logger.info(f"Broker URL: {app.conf.broker_url}")
+logger.info(f"Backend URL: {app.conf.result_backend}")
 
 
 class MLTask(Task):
