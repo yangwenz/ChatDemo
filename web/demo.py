@@ -33,7 +33,7 @@ def query(payload):
         if result.status_code == 200:
             return result.json()
         time.sleep(1)
-    return json.dumps({"generated_text": "Chatbot server timeouts."})
+    return {"generated_text": "Chatbot server timeouts."}
 
 
 def get_text():
