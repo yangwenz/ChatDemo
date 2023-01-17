@@ -17,8 +17,7 @@ spec:
       containers:
         - name: chat-agent
           image: "chatdemo-agent:v1"
-          command: [ "/bin/sh" ]
-          args: [ "/opt/agent/run_celery.sh" ]
+          command: ["/opt/agent/run_celery.sh"]
           env:
             - name: BROKER_URL
               value: "redis-master"
