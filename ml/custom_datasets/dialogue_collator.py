@@ -3,7 +3,7 @@ from typing import Optional, Union
 
 import numpy as np
 import torch
-from custom_datasets.qa_datasets import QA_SPECIAL_TOKENS
+from .qa_datasets import QA_SPECIAL_TOKENS
 from torch.nn import functional as F
 from transformers.tokenization_utils_base import PaddingStrategy, PreTrainedTokenizerBase
 

@@ -1,6 +1,6 @@
-from custom_datasets.prompt_dialogue import PromptGeneratedDataset
-from custom_datasets.qa_datasets import SODA, JokeExplaination, QADataset, WebGPT
-from custom_datasets.summarization import SummarizationDataset
+from .prompt_dialogue import PromptGeneratedDataset
+from .qa_datasets import SODA, JokeExplaination, QADataset, WebGPT
+from .summarization import SummarizationDataset
 from sklearn.model_selection import train_test_split
 from torch.utils.data import Subset
 
