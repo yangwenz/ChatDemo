@@ -1,6 +1,9 @@
+import json
 import os
+import time
 import requests
 import streamlit as st
+from urllib.parse import urljoin
 from web.chat import message
 
 st.set_page_config(
@@ -14,12 +17,20 @@ if "generated" not in st.session_state:
 if "past" not in st.session_state:
     st.session_state["past"] = []
 
-URL = os.getenv("CHATBOT_SERVER_URL", "http://localhost:8081/chat")
+URL = os.getenv("CHATBOT_SERVER_URL", "http://localhost:8081")
+TIMEOUT = os.getenv("CHATBOT_SERVER_TIMEOUT", 20)
 
 
 def query(payload):
-    response = requests.post(URL, json=payload)
-    return response.json()
+    url = urljoin(URL, "chat")
+    response = requests.post(url, json=payload)
+    task_id = response.json()["task_id"]
+    for _ in range(TIMEOUT):
+        result = requests.get(f"{url}/{task_id}")
+        if result.status_code == 200:
+            return result.json()
+        time.sleep(1)
+    return json.dumps({"generated_text": "Chatbot server timeouts."})
 
 
 def get_text():
