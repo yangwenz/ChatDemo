@@ -1,13 +1,9 @@
-import os
 import json
 import argparse
 from flask import Flask, request, abort
 from flask_compress import Compress
-from backend.model import ModelFactory
+from backend.worker import generate_text
 
-model_cls = os.getenv("MODEL_CLASS", "blender")
-model_path = os.getenv("MODEL_PATH", "")
-model = ModelFactory.create(model_cls=model_cls)(model_path)
 app = Flask(__name__)
 Compress(app)
 
@@ -21,11 +17,9 @@ def ping():
 def chat():
     if not request.json:
         abort(400)
-    try:
-        outputs = model.predict(request.json)
-    except Exception as e:
-        outputs = f"ERROR: {str(e)}"
-    return json.dumps({"generated_text": outputs}), 200
+    task = generate_text.delay(request.json)
+    print(task)
+    return json.dumps({"task_id": task.id}), 200
 
 
 def main():
