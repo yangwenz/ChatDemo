@@ -14,7 +14,7 @@ app.conf.broker_url = broker_url
 app.conf.result_backend = backend_url
 
 
-class GenerationTask(Task):
+class MLTask(Task):
     """
     Abstraction of Celery's Task class to support loading ML model.
     """
@@ -42,7 +42,7 @@ class GenerationTask(Task):
 @app.task(
     ignore_result=False,
     bind=True,
-    base=GenerationTask
+    base=MLTask
 )
 def generate_text(self, inputs):
     try:
