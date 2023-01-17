@@ -40,7 +40,7 @@ kind: Service
 metadata:
   name: chat-backend
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: chat-backend
   ports:
