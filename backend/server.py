@@ -36,7 +36,8 @@ def get_status(task_id):
             response.update(result)
             status_code = 200
         return json.dumps(response), status_code
-    except Exception:
+    except Exception as e:
+        print(e)
         abort(400)
 
 

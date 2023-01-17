@@ -6,13 +6,13 @@ from backend.model import ModelFactory
 
 model_cls = os.getenv("MODEL_CLASS", "blender")
 model_path = os.getenv("MODEL_PATH", "")
-broker_url = os.environ.get("CELERY_BROKER_URL", "redis://localhost:6379")
-result_backend = os.environ.get("CELERY_RESULT_BACKEND", "redis://localhost:6379")
+broker_url = os.environ.get("BROKER_URL", "redis://localhost:6379")
+backend_url = os.environ.get("BACKEND_URL", "redis://localhost:6379")
 
 logging.basicConfig(level="INFO")
 logger = logging.getLogger(__name__)
 
-app = Celery(__name__, backend=result_backend, broker=broker_url)
+app = Celery(__name__, backend=backend_url, broker=broker_url)
 
 
 class GenerationTask(Task):
