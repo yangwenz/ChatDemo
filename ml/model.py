@@ -39,7 +39,8 @@ class GPTModel:
     ):
         with torch.no_grad():
             input_ids = torch.LongTensor(
-                self.tokenizer.encode(input_text, verbose=False, max_length=max_length)).unsqueeze(0).cuda()
+                self.tokenizer.encode(input_text, verbose=False, max_length=max_length)
+            ).unsqueeze(0).cuda()
 
             if decoding_style == "sampling":
                 output_ids = self.model.generate(
@@ -50,7 +51,7 @@ class GPTModel:
                     num_return_sequences=num_seqs,
                     top_p=0.95)
 
-            elif decoding_style == 'beam_search':
+            elif decoding_style == "beam_search":
                 output_ids = self.model.generate(
                     input_ids,
                     max_length=max_length,
