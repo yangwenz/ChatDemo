@@ -6,12 +6,14 @@ from celery import Celery, Task
 broker_url = os.environ.get("BROKER_URL", "redis://localhost:6379")
 backend_url = os.environ.get("BACKEND_URL", "redis://localhost:6379")
 
-logging.basicConfig(level="INFO")
-logger = logging.getLogger(__name__)
-
 app = Celery(__name__)
 app.conf.broker_url = broker_url
 app.conf.result_backend = backend_url
+
+logging.basicConfig(level="INFO")
+logger = logging.getLogger(__name__)
+logger.info(f"Broker URL: {broker_url}")
+logger.info(f"Backend URL: {backend_url}")
 
 
 class MLTask(Task):
