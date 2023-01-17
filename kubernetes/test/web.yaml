@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-web
+  labels:
+    app: chat-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat-web
+  template:
+    metadata:
+      labels:
+        app: chat-web
+    spec:
+      containers:
+        - name: chat-web
+          image: "chatdemo-web:v1"
+          command: ["/opt/web/run_web.sh"]
+          ports:
+            - containerPort: 8080
+          env:
+            - name: CHATBOT_SERVER_URL
+              value: "chat-backend"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat-web
+spec:
+  type: LoadBalancer
+  selector:
+    app: chat-web
+  ports:
+    - name: chat-web
+      port: 8080
+      targetPort: 8080

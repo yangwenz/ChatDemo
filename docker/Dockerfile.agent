@@ -7,5 +7,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY . /opt
 RUN pip install --no-cache-dir -r /opt/agent/requirements.txt
+RUN chmod +x /opt/agent/run_celery.sh
 
 WORKDIR /opt

@@ -2,6 +2,7 @@ FROM python:3.8-slim
 
 COPY . /opt
 RUN pip install --no-cache-dir -r /opt/backend/requirements.txt
+RUN chmod +x /opt/backend/run_server.sh
 
 WORKDIR /opt
-EXPOSE 8080
+EXPOSE 8081

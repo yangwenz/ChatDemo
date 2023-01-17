@@ -2,6 +2,7 @@ FROM python:3.8-slim
 
 COPY . /opt
 RUN pip install --no-cache-dir -r /opt/web/requirements.txt
+RUN chmod +x /opt/web/run_web.sh
 
 WORKDIR /opt
 EXPOSE 8080
