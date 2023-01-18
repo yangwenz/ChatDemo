@@ -6,7 +6,7 @@ def create_banner(app):
     return html.Div(
         id="banner",
         className="banner",
-        children=[html.Img(src=app.get_asset_url("dash-logo.png")),
+        children=[html.Img(src=app.get_asset_url("logo.png")),
                   html.Plaintext("  Powered by Salesforce AI Research")],
     )
 
