@@ -12,6 +12,7 @@ def test():
         }
     }
     input_text = GPTJ._get_model_input(inputs)
+    print(input_text)
 
 
 if __name__ == "__main__":
