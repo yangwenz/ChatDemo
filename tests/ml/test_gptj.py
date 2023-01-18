@@ -20,9 +20,13 @@ def test():
         do_sample=True,
         temperature=0.9,
         max_length=100,
+        num_return_sequences=5
     )
-    gen_text = tokenizer.batch_decode(gen_tokens)[0]
-    print(gen_text)
+    # gen_text = tokenizer.batch_decode(gen_tokens)[0]
+    for i, output_id in enumerate(gen_tokens):
+        output_text = tokenizer.decode(output_id, skip_special_tokens=True)
+        print(f"----------------- Index {i} -----------------")
+        print(output_text)
 
 
 if __name__ == "__main__":
