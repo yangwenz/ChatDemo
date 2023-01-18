@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: chat-backend
-          image: "chatdemo-backend:v1"
+          image: "gcr.io/salesforce-research-internal/chatdemo-backend:v1"
           command: ["/opt/backend/run_server.sh"]
           ports:
             - containerPort: 8081

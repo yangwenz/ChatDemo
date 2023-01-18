@@ -23,7 +23,7 @@ spec:
             claimName: sfr-share-pvc-wenzhuo-yang
       containers:
         - name: chat-agent
-          image: "chatdemo-agent:v1"
+          image: "gcr.io/salesforce-research-internal/chatdemo-agent:v1"
           command: ["/opt/agent/run_celery.sh"]
           env:
             - name: CELERYD_PREFETCH_MULTIPLIER
