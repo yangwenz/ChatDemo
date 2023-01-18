@@ -3,7 +3,7 @@ import dash
 import dash_bootstrap_components as dbc
 from dash import html, dcc
 from dash.dependencies import Input, Output
-from web.layout import create_header, create_textbox, \
+from web.layout import create_banner, create_textbox, \
     create_conversation_box, create_controls
 
 import web.callbacks
@@ -20,7 +20,7 @@ server = app.server
 app.layout = dbc.Container(
     fluid=False,
     children=[
-        create_header(app, name="Chatbot Demo"),
+        create_banner(app),
         html.Hr(),
         dcc.Store(id="store-conversation", data=""),
         create_conversation_box(),

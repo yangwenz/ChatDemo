@@ -2,6 +2,15 @@ import dash_bootstrap_components as dbc
 from dash import html
 
 
+def create_banner(app):
+    return html.Div(
+        id="banner",
+        className="banner",
+        children=[html.Img(src=app.get_asset_url("dash-logo.png")),
+                  html.Plaintext("  Powered by Salesforce AI Research")],
+    )
+
+
 def create_header(app, name):
     title = html.H1(name, style={"margin-top": 5})
     logo = html.Img(
