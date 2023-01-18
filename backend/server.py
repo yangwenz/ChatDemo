@@ -45,6 +45,17 @@ def get_status(task_id):
         abort(400)
 
 
+@app.route("/queue_length", methods=["GET"])
+def get_task_queue_length():
+    try:
+        with celery_app.pool.acquire(block=True) as conn:
+            queue_name = celery_app.conf.task_default_queue
+            return str(conn.default_channel.client.llen(queue_name)), 200
+    except Exception as e:
+        logger.warning(f"ERROR in get_task_queue: {str(e)}")
+        abort(400)
+
+
 def main():
     parser = argparse.ArgumentParser(description=None)
     parser.add_argument("--host", default="0.0.0.0", type=str, help="Host")

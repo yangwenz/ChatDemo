@@ -21,9 +21,15 @@ URL = "http://{host}:{port}".format(
     port=os.getenv("CHATBOT_SERVER_PORT", 8081)
 )
 TIMEOUT = os.getenv("CHATBOT_SERVER_TIMEOUT", 20)
+TASK_LIMIT = os.getenv("TASK_LIMIT", 50)
 
 
 def query(payload):
+    url = urljoin(URL, "queue_length")
+    response = requests.get(url)
+    if response.status_code != 200 or int(response.content) > TASK_LIMIT:
+        return {"generated_text": "Chatbot server is too busy. Please try later."}
+
     url = urljoin(URL, "chat")
     response = requests.post(url, json=payload)
     task_id = response.json()["task_id"]
