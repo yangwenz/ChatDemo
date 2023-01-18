@@ -1,3 +1,2 @@
-streamlit>=0.63
 dash==2.7.1
 dash_bootstrap_components==1.3.0
