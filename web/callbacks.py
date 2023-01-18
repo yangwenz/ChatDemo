@@ -1,4 +1,32 @@
+import os
+import time
+import requests
+from urllib.parse import urljoin
 from dash import Input, Output, State, callback
+
+URL = "http://{host}:{port}".format(
+    host=os.getenv("CHATBOT_SERVER_HOST", "localhost"),
+    port=os.getenv("CHATBOT_SERVER_PORT", 8081)
+)
+TIMEOUT = os.getenv("CHATBOT_SERVER_TIMEOUT", 20)
+TASK_LIMIT = os.getenv("TASK_LIMIT", 50)
+
+
+def query(payload):
+    url = urljoin(URL, "queue_length")
+    response = requests.get(url)
+    if response.status_code != 200 or int(response.content) > TASK_LIMIT:
+        return {"generated_text": "ERROR: chatbot server is too busy. Please try later."}
+
+    url = urljoin(URL, "chat")
+    response = requests.post(url, json=payload)
+    task_id = response.json()["task_id"]
+    for _ in range(TIMEOUT):
+        result = requests.get(f"{url}/{task_id}")
+        if result.status_code == 200:
+            return result.json()
+        time.sleep(1)
+    return {"generated_text": "ERROR: Chatbot server timeouts."}
 
 
 @callback(
@@ -37,14 +65,13 @@ def run_chatbot(n_clicks, n_submit, user_input, chat_history):
     # First add the user input to the chat history
     chat_history += f"You: {user_input}<split>{name}:"
     '''
-    response = openai.Completion.create(
-        engine="davinci",
-        prompt=model_input,
-        max_tokens=250,
-        stop=["You:"],
-        temperature=0.9,
-    )
-    model_output = response.choices[0].text.strip()
+    output = query({
+        "inputs": {
+            "past_user_inputs": st.session_state.past,
+            "generated_responses": st.session_state.generated,
+            "text": user_input,
+        }
+    })
     '''
     model_output = "TEST TEST"
 
