@@ -1,10 +1,9 @@
-
 class BaseModel:
 
     def __init__(self, model_path=None):
         self.model_path = model_path
 
-    def predict(self, inputs):
+    def predict(self, inputs, **kwargs):
         return "Test test"
 
 
@@ -26,7 +25,7 @@ class BlenderBotModel(BaseModel):
         self.tokenizer = BlenderbotTokenizer.from_pretrained("facebook/blenderbot-400M-distill")
         self.model.to(self.device)
 
-    def predict(self, inputs):
+    def predict(self, inputs, **kwargs):
         input_text = inputs["inputs"]["text"]
         input_ids = self.tokenizer([input_text], return_tensors="pt").to(self.device)
         reply_ids = self.model.generate(**input_ids)
@@ -35,7 +34,40 @@ class BlenderBotModel(BaseModel):
 
 
 class GPTJ(BaseModel):
-    pass
+
+    def __init__(self, model_path=None):
+        from ml.model import GPTModel
+
+        super().__init__(model_path)
+        self.model = GPTModel(model_path)
+
+    @staticmethod
+    def _get_model_input(
+            inputs,
+            question_prefix="Question:",
+            answer_prefix="Answer:",
+            sep="\n",
+            **kwargs
+    ):
+        prompt = ""
+        inputs = inputs["inputs"]
+        if "past_user_inputs" not in inputs or "generated_responses" not in inputs:
+            return prompt
+        for question, answer in zip(inputs["past_user_inputs"], inputs["generated_responses"]):
+            if answer.startswith("ERROR:"):
+                continue
+            prompt += f"{question_prefix} {question}{sep}{answer_prefix} {answer}{sep}"
+        if "text" in inputs:
+            prompt += f"{question_prefix} {inputs['text']}{sep}{answer_prefix} "
+        return prompt
+
+    def predict(self, inputs, **kwargs):
+        input_text = self._get_model_input(inputs, **kwargs)
+        outputs = self.model.predict(input_text, **kwargs)
+        if isinstance(outputs, (list, tuple)):
+            return outputs[0]
+        else:
+            return outputs
 
 
 class ModelFactory:
@@ -46,5 +78,7 @@ class ModelFactory:
             return TestModel
         elif model_cls in ["blender", "blenderbot"]:
             return BlenderBotModel
-        elif model_cls in ["gptj", "gpt-j"]:
+        elif model_cls in ["gpt", "gptj", "gpt-j"]:
             return GPTJ
+        else:
+            raise ValueError(f"Unknown model class: {model_cls}")

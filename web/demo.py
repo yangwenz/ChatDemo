@@ -28,7 +28,7 @@ def query(payload):
     url = urljoin(URL, "queue_length")
     response = requests.get(url)
     if response.status_code != 200 or int(response.content) > TASK_LIMIT:
-        return {"generated_text": "Chatbot server is too busy. Please try later."}
+        return {"generated_text": "ERROR: chatbot server is too busy. Please try later."}
 
     url = urljoin(URL, "chat")
     response = requests.post(url, json=payload)
@@ -38,7 +38,7 @@ def query(payload):
         if result.status_code == 200:
             return result.json()
         time.sleep(1)
-    return {"generated_text": "Chatbot server timeouts."}
+    return {"generated_text": "ERROR: Chatbot server timeouts."}
 
 
 def get_text():
