@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-agent
+  labels:
+    app: chat-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat-agent
+  template:
+    metadata:
+      labels:
+        app: chat-agent
+    spec:
+      volumes:
+        - name: sfr-home-pv-wenzhuo-yang
+          persistentVolumeClaim:
+            claimName: sfr-home-pvc-wenzhuo-yang
+        - name: sfr-share-pv-wenzhuo-yang
+          persistentVolumeClaim:
+            claimName: sfr-share-pvc-wenzhuo-yang
+      containers:
+        - name: chat-agent
+          image: "chatdemo-agent:v1"
+          command: ["/opt/agent/run_celery.sh"]
+          env:
+            - name: CELERYD_PREFETCH_MULTIPLIER
+              value: 4
+            - name: REDIS_HOST
+              value: redis-master
+            - name: MODEL_CLASS
+              value: "blender"
+            - name: MODEL_PATH
+              value: ""
+          volumeMounts:
+            - name: sfr-home-pv-wenzhuo-yang
+              mountPath: "/export/home"
+            - name: sfr-share-pv-wenzhuo-yang
+              mountPath: "/export/share"
