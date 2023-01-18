@@ -28,11 +28,9 @@ spec:
           command: ["/opt/agent/run_celery.sh"]
           resources:
             limits:
-              cpu: 4
+              cpu: "4"
               memory: 32G
           env:
-            - name: CELERYD_PREFETCH_MULTIPLIER
-              value: 4
             - name: REDIS_HOST
               value: redis-master
             - name: MODEL_CLASS
