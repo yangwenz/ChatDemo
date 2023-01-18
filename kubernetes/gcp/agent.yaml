@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: chat-agent
+  namespace: sfr-ns-wenzhuo-yang
   labels:
     app: chat-agent
 spec:
