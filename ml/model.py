@@ -35,6 +35,7 @@ class GPTModel:
             decoding_style="sampling",
             num_seqs=5,
             temperature=0.6,
+            question_prefix="Question:",
             **kwargs
     ):
         with torch.no_grad():
@@ -62,7 +63,7 @@ class GPTModel:
             outputs = []
             for output_id in output_ids:
                 output_text = self.tokenizer.decode(output_id, skip_special_tokens=True)
-                processed_output_text = post_processing(input_text, output_text)
+                processed_output_text = post_processing(input_text, output_text, question_prefix)
                 outputs.append(processed_output_text)
             return outputs
 
@@ -88,8 +89,8 @@ def get_tokenizer(model_name, cache_dir):
     return tokenizer
 
 
-def post_processing(input_text, output_text):
-    input_indices = [m.start() for m in re.finditer("Question:", input_text)]
-    output_indices = [m.start() for m in re.finditer("Question:", output_text)]
+def post_processing(input_text, output_text, question_prefix):
+    input_indices = [m.start() for m in re.finditer(question_prefix, input_text)]
+    output_indices = [m.start() for m in re.finditer(question_prefix, output_text)]
     output_text = output_text[:output_indices[len(input_indices)]]
     return output_text
