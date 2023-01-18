@@ -40,6 +40,13 @@ def clear_input(n_clicks, n_submit):
     return ""
 
 
+def _process_chat_history(chat_history):
+    chats = chat_history.split("<split>")
+    past_user_inputs = [s[4:].strip() for s in chats if s.startswith("You:")]
+    generated_responses = [s[4:].strip() for s in chats if s.startswith("Robot:")]
+    return past_user_inputs, generated_responses
+
+
 @callback(
     [
         Output("store-conversation", "data"),
@@ -57,23 +64,18 @@ def clear_input(n_clicks, n_submit):
 def run_chatbot(n_clicks, n_submit, user_input, chat_history):
     if n_clicks == 0 and n_submit is None:
         return "", None
-
     if user_input is None or user_input == "":
         return chat_history, None
 
-    name = "Robot"
-    # First add the user input to the chat history
-    chat_history += f"You: {user_input}<split>{name}:"
-    '''
+    past_user_inputs, generated_responses = \
+        _process_chat_history(chat_history)
     output = query({
         "inputs": {
-            "past_user_inputs": st.session_state.past,
-            "generated_responses": st.session_state.generated,
+            "past_user_inputs": past_user_inputs,
+            "generated_responses": generated_responses,
             "text": user_input,
         }
     })
-    '''
-    model_output = "TEST TEST"
-
-    chat_history += f"{model_output}<split>"
+    model_output = output["generated_text"]
+    chat_history += f"You: {user_input}<split>Robot: {model_output}<split>"
     return chat_history, None
