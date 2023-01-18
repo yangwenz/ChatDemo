@@ -6,10 +6,10 @@ from urllib.parse import urljoin
 from web.chat import message
 
 st.set_page_config(
-    page_title="Streamlit Chat - Demo",
+    page_title="Chatbot - Demo",
     page_icon=":robot:"
 )
-st.header("GPTJ Chatbot - Demo")
+st.header("Chatbot - Demo")
 
 if "generated" not in st.session_state:
     st.session_state["generated"] = []
