@@ -1,0 +1,9 @@
+steps:
+  - name: docker
+    args:
+      - build
+      - --tag=gcr.io/salesforce-research-internal/${_IMAGE_NAME}:${_STAGE}
+      - --file=./docker/Dockerfile.agent
+      - .
+images:
+  - gcr.io/salesforce-research-internal/${_IMAGE_NAME}
