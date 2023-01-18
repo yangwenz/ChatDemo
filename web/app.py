@@ -21,11 +21,12 @@ app.layout = dbc.Container(
     fluid=False,
     children=[
         create_banner(app),
-        html.Hr(),
-        dcc.Store(id="store-conversation", data=""),
+        html.Br(),
         create_conversation_box(),
         create_controls(),
+        html.Br(),
         dbc.Spinner(html.Div(id="loading-component")),
+        dcc.Store(id="store-conversation", data=""),
     ],
 )
 
