@@ -25,6 +25,10 @@ spec:
         - name: chat-agent
           image: "gcr.io/salesforce-research-internal/chatdemo-agent:v1"
           command: ["/opt/agent/run_celery.sh"]
+          resources:
+            limits:
+              cpu: 4
+              memory: 32G
           env:
             - name: CELERYD_PREFETCH_MULTIPLIER
               value: 4
