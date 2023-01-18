@@ -28,6 +28,10 @@ class BlenderBotModel(BaseModel):
 
     def predict(self, inputs):
         input_text = inputs["inputs"]["text"]
+
+        print(inputs["inputs"]["past_user_inputs"])
+        print(inputs["inputs"]["generated_responses"])
+
         input_ids = self.tokenizer([input_text], return_tensors="pt").to(self.device)
         reply_ids = self.model.generate(**input_ids)
         outputs = self.tokenizer.batch_decode(reply_ids)
