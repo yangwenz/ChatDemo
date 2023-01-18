@@ -19,6 +19,8 @@ spec:
           image: "chatdemo-agent:v1"
           command: ["/opt/agent/run_celery.sh"]
           env:
+            - name: CELERYD_PREFETCH_MULTIPLIER
+              value: 4
             - name: REDIS_HOST
               value: redis-master
             - name: MODEL_CLASS
