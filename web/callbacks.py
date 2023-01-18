@@ -11,6 +11,9 @@ URL = "http://{host}:{port}".format(
 TIMEOUT = os.getenv("CHATBOT_SERVER_TIMEOUT", 20)
 TASK_LIMIT = os.getenv("TASK_LIMIT", 50)
 
+PLAYER_A = "You:"
+PLAYER_B = "Robot:"
+
 
 def query(payload):
     url = urljoin(URL, "queue_length")
@@ -42,8 +45,8 @@ def clear_input(n_clicks, n_submit):
 
 def _process_chat_history(chat_history):
     chats = chat_history.split("<split>")
-    past_user_inputs = [s[4:].strip() for s in chats if s.startswith("You:")]
-    generated_responses = [s[4:].strip() for s in chats if s.startswith("Robot:")]
+    past_user_inputs = [s[len(PLAYER_A):].strip() for s in chats if s.startswith(PLAYER_A)]
+    generated_responses = [s[len(PLAYER_B):].strip() for s in chats if s.startswith(PLAYER_B)]
     return past_user_inputs, generated_responses
 
 
@@ -77,5 +80,5 @@ def run_chatbot(n_clicks, n_submit, user_input, chat_history):
         }
     })
     model_output = output["generated_text"]
-    chat_history += f"You: {user_input}<split>Robot: {model_output}<split>"
+    chat_history += f"{PLAYER_A} {user_input}<split>{PLAYER_B} {model_output}<split>"
     return chat_history, None
