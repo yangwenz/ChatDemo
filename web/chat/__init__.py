@@ -8,7 +8,7 @@ COMPONENT_NAME = "streamlit_chat"
 
 if _RELEASE:  # use the build instead of development if release is true
     root_dir = os.path.dirname(os.path.abspath(__file__))
-    build_dir = os.path.join(root_dir, "frontend/build")
+    build_dir = os.path.join(root_dir, "frontend/component")
 
     _streamlit_chat = components.declare_component(
         COMPONENT_NAME,
