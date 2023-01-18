@@ -46,5 +46,7 @@ class ModelFactory:
             return TestModel
         elif model_cls in ["blender", "blenderbot"]:
             return BlenderBotModel
-        elif model_cls in ["gptj", "gpt-j"]:
+        elif model_cls in ["gpt", "gptj", "gpt-j"]:
             return GPTJ
+        else:
+            raise ValueError(f"Unknown model class: {model_cls}")
