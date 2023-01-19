@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: chat-web
-          image: "gcr.io/salesforce-research-internal/chatdemo-web:v3"
+          image: "gcr.io/salesforce-research-internal/chatdemo-web:v4"
           command: ["/opt/web/run_web.sh"]
           ports:
             - containerPort: 8080
