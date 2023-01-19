@@ -8,7 +8,7 @@ gcloud builds submit . \
 
 gcloud builds submit . \
 --config=./cloudbuild/web.yaml \
---substitutions=_IMAGE_NAME="chatdemo-web",_STAGE="v2" \
+--substitutions=_IMAGE_NAME="chatdemo-web",_STAGE="v3" \
 --timeout=9000
 
 gcloud builds submit . \
