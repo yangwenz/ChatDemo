@@ -28,8 +28,8 @@ spec:
           command: ["/opt/agent/run_celery.sh"]
           resources:
             limits:
-              cpu: "4"
-              memory: 32G
+              cpu: "16"
+              memory: 64G
           env:
             - name: REDIS_HOST
               value: redis-master
