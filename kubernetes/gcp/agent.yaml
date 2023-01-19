@@ -45,8 +45,8 @@ spec:
               mountPath: "/export/share"
       nodeSelector:
         cloud.google.com/gke-accelerator: nvidia-tesla-a100
-        tolerations:
-          - key: "gpu_num"
-            operator: "Equal"
-            value: "1"
-            effect: "NoSchedule"
+      tolerations:
+        - key: "gpu_num"
+          operator: "Equal"
+          value: "1"
+          effect: "NoSchedule"
