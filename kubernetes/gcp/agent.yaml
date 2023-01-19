@@ -30,6 +30,7 @@ spec:
             limits:
               cpu: "16"
               memory: 64G
+              nvidia.com/gpu: 1
           env:
             - name: REDIS_HOST
               value: redis-master
@@ -42,3 +43,10 @@ spec:
               mountPath: "/export/home"
             - name: sfr-share-pv-wenzhuo-yang
               mountPath: "/export/share"
+      nodeSelector:
+        cloud.google.com/gke-accelerator: nvidia-tesla-a100
+        tolerations:
+          - key: "gpu_num"
+            operator: "Equal"
+            value: "1"
+            effect: "NoSchedule"
