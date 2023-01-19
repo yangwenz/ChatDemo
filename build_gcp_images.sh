@@ -8,11 +8,11 @@ gcloud builds submit . \
 
 gcloud builds submit . \
 --config=./cloudbuild/web.yaml \
---substitutions=_IMAGE_NAME="chatdemo-web",_STAGE="v2" \
+--substitutions=_IMAGE_NAME="chatdemo-web",_STAGE="v4" \
 --timeout=9000
 
 gcloud builds submit . \
 --config=./cloudbuild/agent.yaml \
---substitutions=_IMAGE_NAME="chatdemo-agent",_STAGE="v1" \
+--substitutions=_IMAGE_NAME="chatdemo-agent",_STAGE="v2" \
 --machine-type=n1-highcpu-32  \
 --timeout=9000

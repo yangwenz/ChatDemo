@@ -24,21 +24,27 @@ spec:
             claimName: sfr-share-pvc-wenzhuo-yang
       containers:
         - name: chat-agent
-          image: "gcr.io/salesforce-research-internal/chatdemo-agent:v1"
+          image: "gcr.io/salesforce-research-internal/chatdemo-agent:v2"
           command: ["/opt/agent/run_celery.sh"]
           resources:
             limits:
-              cpu: "4"
-              memory: 32G
+              cpu: 8
+              nvidia.com/gpu: 1
+              memory: "32Gi"
           env:
             - name: REDIS_HOST
               value: redis-master
             - name: MODEL_CLASS
-              value: "blender"
+              value: "gptj"
             - name: MODEL_PATH
-              value: ""
+              value: "/export/share/wenzhuo/gpt-j-6B"
           volumeMounts:
             - name: sfr-home-pv-wenzhuo-yang
               mountPath: "/export/home"
             - name: sfr-share-pv-wenzhuo-yang
               mountPath: "/export/share"
+      tolerations:
+        - key: "gpu_num"
+          operator: "Equal"
+          value: "1"
+          effect: "NoSchedule"
