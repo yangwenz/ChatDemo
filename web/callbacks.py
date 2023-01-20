@@ -1,5 +1,4 @@
 import os
-import time
 import requests
 from urllib.parse import urljoin
 from dash import Input, Output, State, callback
@@ -8,7 +7,6 @@ URL = "http://{host}:{port}".format(
     host=os.getenv("CHATBOT_SERVER_HOST", "localhost"),
     port=os.getenv("CHATBOT_SERVER_PORT", 8081)
 )
-TIMEOUT = os.getenv("CHATBOT_SERVER_TIMEOUT", 20)
 TASK_LIMIT = os.getenv("TASK_LIMIT", 50)
 
 PLAYER_A = "You:"
@@ -21,15 +19,10 @@ def query(payload):
     if response.status_code != 200 or int(response.content) > TASK_LIMIT:
         return {"generated_text": "ERROR: chatbot server is too busy. Please try later."}
 
-    wait_sec = 0.5
     url = urljoin(URL, "chat")
     response = requests.post(url, json=payload)
-    task_id = response.json()["task_id"]
-    for _ in range(int(TIMEOUT / wait_sec)):
-        result = requests.get(f"{url}/{task_id}")
-        if result.status_code == 200:
-            return result.json()
-        time.sleep(wait_sec)
+    if response.status_code == 200:
+        return response.json()
     return {"generated_text": "ERROR: Chatbot server timeouts."}
 
 

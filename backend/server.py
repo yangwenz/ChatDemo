@@ -1,3 +1,4 @@
+import os
 import json
 import logging
 import argparse
@@ -8,6 +9,7 @@ from agent.worker import generate_text
 
 logging.basicConfig(level="INFO")
 logger = logging.getLogger(__name__)
+TIMEOUT = os.getenv("CHATBOT_SERVER_TIMEOUT", 20)
 
 app = Flask(__name__)
 Compress(app)
@@ -22,8 +24,13 @@ def ping():
 def chat():
     try:
         task = generate_text.delay(request.json)
-        return json.dumps({"task_id": task.id, "status": "Processing"}), 200
-    except Exception:
+        result = celery_app.AsyncResult(task.id)
+        result = json.loads(result.get(timeout=TIMEOUT))
+        response = {"task_id": task.id, "status": "Success"}
+        response.update(result)
+        return response, 200
+    except Exception as e:
+        logger.warning(f"ERROR: {str(e)}")
         abort(400)
 
 
