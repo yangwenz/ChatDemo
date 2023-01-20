@@ -56,6 +56,6 @@ class GPTModel:
 def post_processing(input_text, output_text, question_prefix):
     input_indices = [m.start() for m in re.finditer(question_prefix, input_text)]
     output_indices = [m.start() for m in re.finditer(question_prefix, output_text)]
-    i = min(len(input_indices), len(output_indices) - 1)
-    output_text = output_text[:output_indices[i]]
+    if len(input_indices) < len(output_indices):
+        output_text = output_text[:output_indices[len(input_indices)]]
     return output_text
