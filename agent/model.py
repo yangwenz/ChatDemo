@@ -91,6 +91,21 @@ class SearchModel(BaseModel):
                 prompt += f"{question_prefix} {question}{sep}{answer_prefix} {answer}{sep}"
         if "text" in inputs:
             prompt += f"{question_prefix} {inputs['text']}{sep}{answer_prefix} "
+        return SearchModel._check_length(prompt, sep=sep)
+
+    @staticmethod
+    def _check_length(prompt, sep, max_length=1600):
+        n = len(prompt.split())
+        if n > max_length:
+            sentences = prompt.split(sep)
+            while len(sentences) > 4:
+                question = sentences.pop(0)
+                answer = sentences.pop(0)
+                k = len(question.split()) + len(answer.split())
+                n -= k
+                if n < max_length * 0.95:
+                    break
+            return sep.join(sentences)
         return prompt
 
     def predict(self, inputs, prompt=None, **kwargs):
