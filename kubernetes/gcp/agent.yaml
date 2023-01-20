@@ -28,7 +28,7 @@ spec:
           command: ["/opt/agent/run_celery.sh"]
           resources:
             limits:
-              cpu: 12
+              cpu: 8
               nvidia.com/gpu: 1
               memory: "32Gi"
           env:
