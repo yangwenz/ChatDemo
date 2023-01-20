@@ -3,12 +3,12 @@
 
 gcloud builds submit . \
 --config=./cloudbuild/backend.yaml \
---substitutions=_IMAGE_NAME="chatdemo-backend",_STAGE="v1" \
+--substitutions=_IMAGE_NAME="chatdemo-backend",_STAGE="v2" \
 --timeout=9000
 
 gcloud builds submit . \
 --config=./cloudbuild/web.yaml \
---substitutions=_IMAGE_NAME="chatdemo-web",_STAGE="v4" \
+--substitutions=_IMAGE_NAME="chatdemo-web",_STAGE="v5" \
 --timeout=9000
 
 gcloud builds submit . \
