@@ -1,3 +1,2 @@
 #!/bin/sh
-# PYTHONPATH=. python ./backend/server.py
-PYTHONPATH=. gunicorn backend.server:app --bind 0.0.0.0:8081
+PYTHONPATH=. gunicorn backend.server:app --workers 4 --timeout 180 --bind 0.0.0.0:8081
