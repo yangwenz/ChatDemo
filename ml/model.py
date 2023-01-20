@@ -8,7 +8,7 @@ class GPTModel:
     def __init__(self, model_path=None):
         self.tokenizer = AutoTokenizer.from_pretrained(model_path)
         self.model = AutoModelForCausalLM.from_pretrained(
-            model_path, torch_dtype=torch.float16, low_cpu_mem_usage=True)
+            model_path, low_cpu_mem_usage=True)
         self.model.to(torch.device("cuda" if torch.cuda.is_available() else "cpu"))
 
     def predict(
