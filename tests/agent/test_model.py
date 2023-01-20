@@ -1,8 +1,12 @@
+import os
 from agent.model import SearchModel
 from agent.model import GPTJ
 
 
 def test_1():
+    folder = os.path.dirname(os.path.abspath(__file__))
+    with open(os.path.join(folder, "../../agent/prompt_example.txt"), "r") as f:
+        prompt = f.read()
     past_user_inputs = ["How are you?", "Where are you from?"]
     generated_responses = ["Fine.", "United States."]
     inputs = {
@@ -12,8 +16,12 @@ def test_1():
             "text": "Do you watch NBA?",
         }
     }
-    input_text = SearchModel._get_model_input(inputs)
+    input_text = SearchModel._get_model_input(inputs, prompt=prompt)
     print(input_text)
+
+    model = SearchModel("/home/ywz/data/models/GPT-JT-6B-v1")
+    outputs = model.predict(inputs, prompt=prompt)
+    print(outputs)
 
 
 def test_2():
@@ -25,4 +33,4 @@ def test_2():
 
 
 if __name__ == "__main__":
-    test_2()
+    test_1()

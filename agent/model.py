@@ -82,7 +82,7 @@ class SearchModel(BaseModel):
             prompt=None,
             **kwargs
     ):
-        prompt = prompt + "\n" if prompt else ""
+        prompt = prompt + sep if prompt else ""
         inputs = inputs["inputs"]
         if "past_user_inputs" not in inputs or "generated_responses" not in inputs:
             return prompt
