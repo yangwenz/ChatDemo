@@ -8,7 +8,7 @@ class GPTModel:
     def __init__(self, model_path=None):
         self.tokenizer = AutoTokenizer.from_pretrained(model_path)
         self.model = AutoModelForCausalLM.from_pretrained(
-            model_path, torch_dtype=torch.float16, low_cpu_mem_usage=True)
+            model_path, low_cpu_mem_usage=True)
         self.model.to(torch.device("cuda" if torch.cuda.is_available() else "cpu"))
 
     def predict(
@@ -26,6 +26,8 @@ class GPTModel:
             input_ids = torch.LongTensor(
                 self.tokenizer.encode(input_text, verbose=False, max_length=max_length)
             ).unsqueeze(0).cuda()
+            if input_ids.shape[1] > max_length:
+                input_ids = input_ids[:, -max_length:]
 
             if decoding_style == "sampling":
                 output_ids = self.model.generate(
