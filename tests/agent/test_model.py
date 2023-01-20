@@ -13,12 +13,9 @@ def test_1():
         "inputs": {
             "past_user_inputs": past_user_inputs,
             "generated_responses": generated_responses,
-            "text": "Do you watch NBA?",
+            "text": "Do you know Salesforce?",
         }
     }
-    input_text = SearchModel._get_model_input(inputs, prompt=prompt)
-    print(input_text)
-
     model = SearchModel("/home/ywz/data/models/GPT-JT-6B-v1")
     outputs = model.predict(inputs, prompt=prompt)
     print(outputs)
