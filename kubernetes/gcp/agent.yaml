@@ -37,7 +37,7 @@ spec:
             - name: MODEL_CLASS
               value: "search"
             - name: MODEL_PATH
-              value: "/export/share/wenzhuo/gpt-j-6B"
+              value: "/export/share/wenzhuo/GPT-JT-6B-v1"
           volumeMounts:
             - name: sfr-home-pv-wenzhuo-yang
               mountPath: "/export/home"
