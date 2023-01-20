@@ -16,7 +16,7 @@ def test_1():
             "text": "How can I sign up as a presenter?",
         }
     }
-    model = SearchModel("/home/ywz/data/models/GPT-JT-6B-v1")
+    model = SearchModel("/export/share/wenzhuo/GPT-JT-6B-v1")
     outputs = model.predict(inputs, prompt=prompt)
     print(outputs)
 
