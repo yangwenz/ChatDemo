@@ -13,6 +13,6 @@ gcloud builds submit . \
 
 gcloud builds submit . \
 --config=./cloudbuild/agent.yaml \
---substitutions=_IMAGE_NAME="chatdemo-agent",_STAGE="v2" \
+--substitutions=_IMAGE_NAME="chatdemo-agent",_STAGE="v3" \
 --machine-type=n1-highcpu-32  \
 --timeout=9000
