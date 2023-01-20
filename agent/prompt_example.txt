@@ -1,0 +1,54 @@
+Question: How do I book an event?
+Answer: Please book all events using our event support _FORM_ (https://docs.google.com/forms/d/1zLR7vNOd97IXqiqu0lWx8DQ0FPfumbyOlLnlFpFUzOU/edit). After submission, an events team member will reach out to you about your request. If you have any questions, you can contact _streamforce-intake@salesforce.com_ (mailto:streamforce-intake@salesforce.com).
+Question: How does a broadcast work?
+Answer: For a typical broadcast, speakers are hosted on Zoom and viewers watch on IBM Watson. Using our production equipment, we connect the 2 together. As part of our PLUS package, we can manipulate how the stream looks.
+Question: Where can I watch the stream?
+Answer: You can watch all streams on the IBM Watson platform. There are specific channels that each event can stream on. All event hosts will be emailed the specific channel link to send attendees.
+Question: Can the audience watch on Zoom?
+Answer: The IBM channel is designated for live viewership while Zoom is reserved for presenters, organizers, and stream operators. If your event requires the audience to watch on Zoom (usually external events), you can work with your Streamforce operator to set this up as part of the PLUS package.
+Question: Can you stream to social media channels?
+Answer: Yes - Twitter, Facebook, Youtube, LinkedIn (any platform that can support RTMP)
+Question: How can I book caption services?
+Answer: Caption service is booked on behalf of the organizer by a Streamforce team member/event operator
+Question: How will captions be displayed?
+Answer: Captions are done via Streamtext (a live transcript that can be opened in a separate web page to read alongside the video). Your stream operator will send you a Streamtext link before your event.
+Question: As a presenter, how should I prepare for my event?
+Answer: You can check out some best practices _HERE._ (https://drive.google.com/file/d/1l1QFLWmqVKZA1go5ANgAAYHo6raPEiQF/view?usp=sharing)
+Question: If I am a presenter, how do I know when I am on or off-camera?
+Answer: The Streamforce operator will follow the show flow created by the event host. If the event does not have a show flow the Streamforce operator will only show the active speaker.
+Question: What VC platforms do you use for events?
+Answer: Zoom is the preferred VC platform for both Standard and Plus services.
+Question: Do I need to request a Zoom license?
+Answer: You do not need to request a Zoom license, a Streamforce team member will create the Zoom ID for your event. You will just need to log in to Zoom with your Salesforce email.
+Question: Will the event be recorded?
+Answer: Yes, the event will be recorded for future use as Video on Demand content and available on the IBM Watson website.
+Question: Where can I find the recorded file?
+Answer: The recording will be published to the appropriate channel on the video list located below the window player on IBM. The Streamforce event lead will share a direct link to the recording via email.
+Question: How can I see any viewer metrics for my event?
+Answer: Streamforce will provide viewership data after the event has concluded. This data may include the list of attendees if requested.
+Question: Does your team share slides or click-through decks for presenters?
+Answer: No, the event hosts team is required to share and advance slides.
+Question: Can we get pre-show music?
+Answer: As part of our PLUS package, we can play a royalty-free playlist at the start and end of your stream.
+Question: Is it possible to play a video during or before the event starts?
+Answer: As part of the PLUS package, the Streamforce member can play videos at any time during your event. Please deliver the videos at least 2 days before the event. If you are using our Standard package and want to play a video, the event operator will work with you on the best way to share a video.
+Question: Can you add graphics such as lower thirds or overlays to a broadcast?
+Answer: As part of our PLUS package, we can add graphics, overlays, and lower thirds. These graphics will need to be provided to us at least 2 days before show day. Check out the Look Book for our PLUS service _HERE_ (https://docs.google.com/presentation/d/1oSBqPtOqbsWjyZZAFHScr2oNQiTqNzzQZymIqM3yVww/edit?usp=sharing).
+Question: Do you help me edit (remove) unnecessary parts of my video recording?
+Answer: As part of the Streamforce service, we will trim the beginning, end and fix any major errors of your event for the VOD. Streamforce does not edit any pre-recorded content to be played back during the event.
+Question: Can I download recorded files and distribute them within my network?
+Answer: If you need the recording for any post-event distribution, you can work with your stream operator to deliver a download link to you. Please note that all internal events are confidential and should not be distributed externally without proper authorization.
+Question: What camera should I use?
+Answer: An external 1080p webcam or DSLR will give you a better picture than the built-in laptop webcam (which is only 720p). You can still use your laptop webcam, we just ask that you raise your laptop so the webcam is level with your eyes. Check out this _Concierge article_ (https://concierge.it.salesforce.com/articles/en_US/Supportforce_Article/Top-Techforce-Tips-for-Salesforce-Home) for more information on additional gear for your at-home setup.
+Question: Can I use an additional microphone attached to my laptop?
+Answer: Yes, an additional microphone or headphones is preferred over your built-in laptop microphone. If using an external microphone, please refer to the user manual to set it up and test before the event. Check out this _Concierge article_ (https://concierge.it.salesforce.com/articles/en_US/Supportforce_Article/Top-Techforce-Tips-for-Salesforce-Home) for more information on additional gear for your at-home setup.
+Question: Can we use breakout rooms for our event?
+Answer: Streamforce does not support breakout rooms. If your event requires breakout rooms they will need to be managed by the event host.
+Question: How many presenters can I have?
+Answer: There is no set limit on the number of presenters for your event. Please work with your Streamforce team member to develop the best plan based on the number of presenters.
+Question: Can you create a custom gallery view?
+Answer: Custom gallery views can be used for a certain number of presenters. Based on your event, the default gallery in Zoom might be the best solution. Work with your Streamforce team member for more details.
+Question: Is there any cost associated with Streamforce?
+Answer: Streamforce is an internal team that comes at no cost.
+Question: Why does the stream look blurry or pixelated on IBM Watson?
+Answer: This is usually due to the viewer not selecting the “HD” button that can be found in the bottom right of the video player. We recommend watching in 1080P or 720P

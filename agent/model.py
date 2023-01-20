@@ -79,9 +79,10 @@ class SearchModel(BaseModel):
             question_prefix="Question:",
             answer_prefix="Answer:",
             sep="\n",
+            prompt=None,
             **kwargs
     ):
-        prompt = ""
+        prompt = prompt + "\n" if prompt else ""
         inputs = inputs["inputs"]
         if "past_user_inputs" not in inputs or "generated_responses" not in inputs:
             return prompt
@@ -93,8 +94,8 @@ class SearchModel(BaseModel):
             prompt += f"{question_prefix} {inputs['text']}{sep}{answer_prefix} "
         return prompt
 
-    def predict(self, inputs, **kwargs):
-        input_text = self._get_model_input(inputs, **kwargs)
+    def predict(self, inputs, prompt=None, **kwargs):
+        input_text = self._get_model_input(inputs, prompt=prompt, **kwargs)
         outputs = self.model.predict(input_text, **kwargs)
         if isinstance(outputs, (list, tuple)):
             return outputs[0]

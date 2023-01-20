@@ -40,6 +40,13 @@ class MLTask(Task):
             logger.info(f"Loading model {model_cls}")
             self.model = ModelFactory.create(model_cls=model_cls)(model_path)
             logger.info("Model loaded")
+
+            logger.info(f"Loading prompt examples")
+            folder = os.path.dirname(os.path.abspath(__file__))
+            with open(os.path.join(folder, "prompt_example.txt"), "r") as f:
+                self.prompt = f.read()
+            logger.info("Prompt loaded")
+
         return self.run(*args, **kwargs)
 
 
@@ -50,7 +57,7 @@ class MLTask(Task):
 )
 def generate_text(self, inputs):
     try:
-        outputs = self.model.predict(inputs)
+        outputs = self.model.predict(inputs, prompt=self.prompt)
     except Exception as e:
         outputs = f"ERROR: {str(e)}"
     return json.dumps({"generated_text": outputs})
