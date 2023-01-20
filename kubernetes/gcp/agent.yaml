@@ -24,13 +24,13 @@ spec:
             claimName: sfr-share-pvc-wenzhuo-yang
       containers:
         - name: chat-agent
-          image: "gcr.io/salesforce-research-internal/chatdemo-agent:v3"
+          image: "gcr.io/salesforce-research-internal/chatdemo-agent:v4"
           command: ["/opt/agent/run_celery.sh"]
           resources:
             limits:
               cpu: 12
               nvidia.com/gpu: 1
-              memory: "50Gi"
+              memory: "32Gi"
           env:
             - name: REDIS_HOST
               value: redis-master
