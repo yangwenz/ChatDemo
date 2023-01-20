@@ -26,8 +26,6 @@ class GPTModel:
             input_ids = torch.LongTensor(
                 self.tokenizer.encode(input_text, verbose=False, max_length=max_length)
             ).unsqueeze(0).cuda()
-            if input_ids.shape[1] > max_length:
-                input_ids = input_ids[:, -max_length:]
 
             if decoding_style == "sampling":
                 output_ids = self.model.generate(
