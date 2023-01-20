@@ -13,7 +13,7 @@ def test_1():
         "inputs": {
             "past_user_inputs": past_user_inputs,
             "generated_responses": generated_responses,
-            "text": "What is Streamforce?",
+            "text": "How can I sign up as a presenter?",
         }
     }
     model = SearchModel("/export/share/wenzhuo/GPT-JT-6B-v1")
