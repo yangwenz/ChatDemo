@@ -7,13 +7,13 @@ def test_1():
     folder = os.path.dirname(os.path.abspath(__file__))
     with open(os.path.join(folder, "../../agent/prompt_example.txt"), "r") as f:
         prompt = f.read()
-    past_user_inputs = ["What is Streamforce?"]
-    generated_responses = ["Streamforce is a live streaming service for IBM Watson, enabling presenters to broadcast their event to the world."]
+    past_user_inputs = []
+    generated_responses = []
     inputs = {
         "inputs": {
             "past_user_inputs": past_user_inputs,
             "generated_responses": generated_responses,
-            "text": "How can I sign up as a presenter?",
+            "text": "What is Streamforce?",
         }
     }
     model = SearchModel("/export/share/wenzhuo/GPT-JT-6B-v1")
