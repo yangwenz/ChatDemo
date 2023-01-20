@@ -24,7 +24,7 @@ spec:
             claimName: sfr-share-pvc-wenzhuo-yang
       containers:
         - name: chat-agent
-          image: "gcr.io/salesforce-research-internal/chatdemo-agent:v4"
+          image: "gcr.io/salesforce-research-internal/chatdemo-agent:v5"
           command: ["/opt/agent/run_celery.sh"]
           resources:
             limits:
