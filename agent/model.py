@@ -84,12 +84,11 @@ class SearchModel(BaseModel):
     ):
         prompt = prompt + sep if prompt else ""
         inputs = inputs["inputs"]
-        if "past_user_inputs" not in inputs or "generated_responses" not in inputs:
-            return prompt
-        for question, answer in zip(inputs["past_user_inputs"], inputs["generated_responses"]):
-            if answer.startswith("ERROR:"):
-                continue
-            prompt += f"{question_prefix} {question}{sep}{answer_prefix} {answer}{sep}"
+        if "past_user_inputs" in inputs and "generated_responses" in inputs:
+            for question, answer in zip(inputs["past_user_inputs"], inputs["generated_responses"]):
+                if answer.startswith("ERROR:"):
+                    continue
+                prompt += f"{question_prefix} {question}{sep}{answer_prefix} {answer}{sep}"
         if "text" in inputs:
             prompt += f"{question_prefix} {inputs['text']}{sep}{answer_prefix} "
         return prompt
