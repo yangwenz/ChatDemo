@@ -73,3 +73,7 @@ WORKDIR /workspace
 RUN ln -sf /usr/bin/python3.8 /usr/bin/python
 RUN sed -i 's/#X11UseLocalhost yes/X11UseLocalhost no/g' /etc/ssh/sshd_config && \
     mkdir /var/run/sshd -p
+
+EXPOSE 8000
+EXPOSE 8001
+EXPOSE 8002
