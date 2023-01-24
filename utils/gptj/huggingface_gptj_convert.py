@@ -1,5 +1,6 @@
 import os
 import torch
+import argparse
 import configparser
 import multiprocessing
 import numpy as np
@@ -151,36 +152,18 @@ def split_and_convert(args):
     pool.join()
 
 
-class Args:
-    def __init__(self, **kwargs):
-        for key in kwargs:
-            setattr(self, key, kwargs[key])
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
+    parser.add_argument('--saved_dir', '-o', type=str, help='file name of output file', required=True)
+    parser.add_argument('--in_file', '-i', type=str, help='HF model name or directory', required=True)
+    parser.add_argument('--trained_gpu_num', '-t_g', type=int, help='How many gpus for training', default=1)
+    parser.add_argument('--infer_gpu_num', '-i_g', type=int, help='How many gpus for inference', required=True)
+    parser.add_argument("--processes", "-p", type=int, help="How many processes to spawn for conversion", default=1)
+    parser.add_argument("--weight_data_type", type=str, default="fp16", choices=["fp32", "fp16"])
 
+    args = parser.parse_args()
+    args.in_file = args.in_file.rstrip("/")
+    model_name = os.path.basename(args.in_file)
+    args.saved_dir = os.path.join(args.saved_dir, f"{model_name}-{args.infer_gpu_num}gpu")
 
-def convert(
-        saved_dir: str,
-        in_file: str,
-        trained_gpu_num: int = 1,
-        infer_gpu_num: int = 1,
-        processes: int = 1,
-        weight_data_type: str = "fp32"
-):
-    """
-    :param saved_dir: File name of output file.
-    :param in_file: HF model name or directory.
-    :param trained_gpu_num: How many gpus for training.
-    :param infer_gpu_num: How many gpus for inference.
-    :param processes: How many processes to spawn for conversion.
-    :param weight_data_type: Output weight data type (fp32, fp16).
-    """
-    assert weight_data_type in ["fp32", "fp16"]
-
-    args = Args(
-        saved_dir=saved_dir,
-        in_file=in_file,
-        trained_gpu_num=trained_gpu_num,
-        infer_gpu_num=infer_gpu_num,
-        processes=processes,
-        weight_data_type=weight_data_type
-    )
     split_and_convert(args)
