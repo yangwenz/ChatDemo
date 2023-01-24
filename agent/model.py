@@ -117,6 +117,12 @@ class SearchModel(BaseModel):
             return outputs
 
 
+class TritonModel(BaseModel):
+
+    def predict(self, inputs, prompt=None, **kwargs):
+        pass
+
+
 class ModelFactory:
 
     @staticmethod
@@ -129,5 +135,7 @@ class ModelFactory:
             return GPTJ
         elif model_cls in ["search"]:
             return SearchModel
+        elif model_cls == "triton":
+            return TritonModel
         else:
             raise ValueError(f"Unknown model class: {model_cls}")
