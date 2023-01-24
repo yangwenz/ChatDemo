@@ -25,6 +25,6 @@ export TRITON_DOCKER_IMAGE=triton_with_ft:${CONTAINER_VERSION}
 
 gcloud builds submit . \
 --config=./triton.yaml \
---substitutions=_IMAGE_NAME="triton_with_ft",_STAGE="22.12" \
+--substitutions=_IMAGE_NAME="triton_with_ft",_STAGE=${CONTAINER_VERSION} \
 --machine-type=n1-highcpu-32  \
 --timeout=9000

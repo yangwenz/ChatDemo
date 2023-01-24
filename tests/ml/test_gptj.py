@@ -17,7 +17,7 @@ def test():
         input_ids,
         do_sample=True,
         temperature=0.9,
-        max_length=100,
+        max_length=64,
         num_return_sequences=1
     )
     print(time.time() - start_time)
