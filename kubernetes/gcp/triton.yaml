@@ -50,8 +50,6 @@ spec:
               path: /v2/health/ready
               port: 8000
             initialDelaySeconds: 120
-      nodeSelector:
-        cloud.google.com/gke-accelerator: nvidia-tesla-a100
       tolerations:
         - key: "gpu_num"
           operator: "Equal"
