@@ -25,3 +25,17 @@ spec:
               value: "blender"
             - name: MODEL_PATH
               value: ""
+          livenessProbe:
+            exec:
+              command:
+                - /bin/bash
+                - -c
+                - /opt/agent/celery_liveness.py
+            initialDelaySeconds: 15
+          readinessProbe:
+            exec:
+              command:
+                - /bin/bash
+                - -c
+                - /opt/agent/celery_readiness.py
+            initialDelaySeconds: 5
