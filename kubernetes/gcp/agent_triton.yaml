@@ -40,6 +40,16 @@ spec:
               mountPath: "/export/home"
             - name: sfr-share-pv-wenzhuo-yang
               mountPath: "/export/share"
+          livenessProbe:
+            httpGet:
+              path: /v2/health/ready
+              port: 8000
+            initialDelaySeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /v2/health/ready
+              port: 8000
+            initialDelaySeconds: 20
         - name: chat-agent-celery
           image: "gcr.io/salesforce-research-internal/chatdemo-agent:v6"
           command: [ "/opt/agent/run_celery.sh" ]
