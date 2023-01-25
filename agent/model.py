@@ -1,4 +1,14 @@
+import os
+import re
 import torch
+import logging
+import numpy as np
+import tritonclient.http as httpclient
+from tritonclient.utils import np_to_triton_dtype
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+logging.basicConfig(level="INFO")
+logger = logging.getLogger(__name__)
 
 
 class BaseModel:
@@ -17,7 +27,6 @@ class TestModel(BaseModel):
 class BlenderBotModel(BaseModel):
 
     def __init__(self, model_path=None):
-        import torch
         from transformers import BlenderbotTokenizer, BlenderbotForConditionalGeneration
 
         super().__init__(model_path)
@@ -39,9 +48,6 @@ class BlenderBotModel(BaseModel):
 class GPTJ(BaseModel):
 
     def __init__(self, model_path=None):
-        import torch
-        from transformers import AutoModelForCausalLM, AutoTokenizer
-
         super().__init__(model_path)
         if self.model_path is None:
             self.model_path = "EleutherAI/gpt-j-6B"
@@ -74,7 +80,7 @@ class SearchModel(BaseModel):
         self.model = GPTModel(model_path)
 
     @staticmethod
-    def _get_model_input(
+    def get_model_input(
             inputs,
             question_prefix="Question:",
             answer_prefix="Answer:",
@@ -109,7 +115,7 @@ class SearchModel(BaseModel):
         return prompt
 
     def predict(self, inputs, prompt=None, **kwargs):
-        input_text = self._get_model_input(inputs, prompt=prompt, **kwargs)
+        input_text = self.get_model_input(inputs, prompt=prompt, **kwargs)
         outputs = self.model.predict(input_text, **kwargs)
         if isinstance(outputs, (list, tuple)):
             return outputs[0]
@@ -119,8 +125,88 @@ class SearchModel(BaseModel):
 
 class TritonModel(BaseModel):
 
-    def predict(self, inputs, prompt=None, **kwargs):
-        pass
+    def __init__(self, model_path=None):
+        super().__init__(model_path)
+        if self.model_path is None:
+            self.model_path = "togethercomputer/GPT-JT-6B-v1"
+        self.tokenizer = AutoTokenizer.from_pretrained(self.model_path)
+
+        self.triton_url = os.getenv("TRITON_URL", "localhost:8000")
+        self.triton_model_name = os.getenv("TRITON_MODEL_NAME", "fastertransformer")
+        self.triton_model_version = os.getenv("TRITON_MODEL_VERSION", "1")
+        self.client = httpclient.InferenceServerClient(
+            self.triton_url, concurrency=1, verbose=False)
+
+    @staticmethod
+    def _prepare_tensor(name, x):
+        t = httpclient.InferInput(
+            name, x.shape, np_to_triton_dtype(x.dtype))
+        t.set_data_from_numpy(x)
+        return t
+
+    @staticmethod
+    def _post_processing(input_text, output_text, question_prefix):
+        input_indices = [m.start() for m in re.finditer(question_prefix, input_text)]
+        output_indices = [m.start() for m in re.finditer(question_prefix, output_text)]
+        if len(input_indices) < len(output_indices):
+            output_text = output_text[:output_indices[len(input_indices)]]
+        return output_text
+
+    def predict(
+            self,
+            inputs,
+            prompt=None,
+            temperature=0.6,
+            request_output_len=128,
+            topk=1,
+            topp=0,
+            beam_width=1,
+            len_penalty=1.0,
+            repetition_penalty=1.0,
+            question_prefix="Question:",
+            answer_prefix="Answer:",
+            **kwargs
+    ):
+        input_text = SearchModel.get_model_input(inputs, prompt=prompt, **kwargs)
+        input_ids = np.expand_dims(
+            self.tokenizer.encode(input_text, verbose=False), axis=0).astype(np.uint32)
+
+        n = input_ids.shape[0]
+        runtime_top_k = (topk * np.ones([n, 1])).astype(np.uint32)
+        runtime_top_p = (topp * np.ones([n, 1])).astype(np.float32)
+        temperature = (temperature * np.ones([n, 1])).astype(np.float32)
+        len_penalty = (len_penalty * np.ones([n, 1])).astype(np.float32)
+        repetition_penalty = (repetition_penalty * np.ones([n, 1])).astype(np.float32)
+        beam_width = (beam_width * np.ones([n, 1])).astype(np.uint32)
+
+        inputs = [
+            self._prepare_tensor("input_ids", input_ids),
+            self._prepare_tensor("input_lengths", np.array([[input_ids.shape[1]]], dtype=np.uint32)),
+            self._prepare_tensor("request_output_len", np.array([[request_output_len]], dtype=np.uint32)),
+            self._prepare_tensor("runtime_top_k", runtime_top_k),
+            self._prepare_tensor("runtime_top_p", runtime_top_p),
+            self._prepare_tensor("temperature", temperature),
+            self._prepare_tensor("len_penalty", len_penalty),
+            self._prepare_tensor("repetition_penalty", repetition_penalty),
+            self._prepare_tensor("beam_width", beam_width),
+        ]
+        try:
+            result = self.client.infer(
+                self.triton_model_name,
+                inputs,
+                model_version=self.triton_model_version
+            )
+            output_ids = result.as_numpy("output_ids")[0]
+
+            output_id = output_ids[0]
+            output_text = self.tokenizer.decode(output_id)
+            processed_output_text = self._post_processing(input_text, output_text, question_prefix)
+            answer = processed_output_text.split(answer_prefix)[-1].strip()
+            return answer
+
+        except Exception as e:
+            logger.warning(f"Triton inference error: {str(e)}")
+            return "Inference server error. Please try again after some time."
 
 
 class ModelFactory:
