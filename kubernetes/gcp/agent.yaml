@@ -26,11 +26,6 @@ spec:
         - name: chat-agent
           image: "gcr.io/salesforce-research-internal/chatdemo-agent:v5"
           command: ["/opt/agent/run_celery.sh"]
-          resources:
-            limits:
-              cpu: 8
-              nvidia.com/gpu: 1
-              memory: "32Gi"
           env:
             - name: REDIS_HOST
               value: redis-master
@@ -38,15 +33,10 @@ spec:
               value: "search"
             - name: MODEL_PATH
               value: "/export/share/wenzhuo/GPT-JT-6B-v1"
+            - name: TRITON_HOST
+              value: chat-triton
           volumeMounts:
             - name: sfr-home-pv-wenzhuo-yang
               mountPath: "/export/home"
             - name: sfr-share-pv-wenzhuo-yang
               mountPath: "/export/share"
-      nodeSelector:
-        cloud.google.com/gke-accelerator: nvidia-tesla-a100
-      tolerations:
-        - key: "gpu_num"
-          operator: "Equal"
-          value: "1"
-          effect: "NoSchedule"

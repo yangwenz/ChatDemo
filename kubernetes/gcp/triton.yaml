@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sfr-chat-a100
+  name: chat-triton
   namespace: sfr-ns-wenzhuo-yang
   labels:
-    app: chat-a100
+    app: chat-triton
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: chat-a100
+      app: chat-triton
   template:
     metadata:
       labels:
-        app: chat-a100
+        app: chat-triton
     spec:
       volumes:
         - name: sfr-home-pv-wenzhuo-yang
@@ -23,31 +23,33 @@ spec:
           persistentVolumeClaim:
             claimName: sfr-share-pvc-wenzhuo-yang
       containers:
-        - name: chatdemo
-          image: "gcr.io/salesforce-research-internal/chatdemo"
-          command: ["/opt/start.sh"]
-          ports:
-            - containerPort: 8080
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 8081
-            initialDelaySeconds: 120
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 8081
-            initialDelaySeconds: 120
+        - name: chat-triton
+          image: "gcr.io/salesforce-research-internal/triton_with_ft:22.12"
+          command: [ "/opt/tritonserver/bin/tritonserver" ]
+          args: [ "--model-repository", "$(FT_MODEL_REPO)" ]
           resources:
             limits:
+              cpu: 8
               nvidia.com/gpu: 1
-              cpu: "23"
-              memory: 75G
+              memory: "32Gi"
+          env:
+            - name: FT_MODEL_REPO
+              value: "/export/share/wenzhuo/GPT-JT-6B-v1-1gpu"
           volumeMounts:
             - name: sfr-home-pv-wenzhuo-yang
               mountPath: "/export/home"
             - name: sfr-share-pv-wenzhuo-yang
               mountPath: "/export/share"
+          livenessProbe:
+            httpGet:
+              path: /v2/health/ready
+              port: 8000
+            initialDelaySeconds: 120
+          readinessProbe:
+            httpGet:
+              path: /v2/health/ready
+              port: 8000
+            initialDelaySeconds: 120
       nodeSelector:
         cloud.google.com/gke-accelerator: nvidia-tesla-a100
       tolerations:
@@ -59,12 +61,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: sfr-chat-a100
+  name: chat-triton
+  namespace: sfr-ns-wenzhuo-yang
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
-    app: chat-a100
+    app: chat-triton
   ports:
-    - name: chat-a100
-      port: 8080
-      targetPort: 8080
+    - name: chat-triton
+      port: 8000
+      targetPort: 8000
