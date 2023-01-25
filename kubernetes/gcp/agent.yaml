@@ -30,7 +30,7 @@ spec:
             - name: REDIS_HOST
               value: redis-master
             - name: MODEL_CLASS
-              value: "search"
+              value: "triton"
             - name: MODEL_PATH
               value: "/export/share/wenzhuo/GPT-JT-6B-v1"
             - name: TRITON_HOST
