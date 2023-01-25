@@ -130,7 +130,7 @@ class TritonModel(BaseModel):
             self.model_path = "togethercomputer/GPT-JT-6B-v1"
         self.tokenizer = AutoTokenizer.from_pretrained(self.model_path)
 
-        self.triton_url = "http://{host}:{port}".format(
+        self.triton_url = "{host}:{port}".format(
             host=os.getenv("TRITON_HOST", "localhost"),
             port=os.getenv("TRITON_PORT", 8000)
         )
