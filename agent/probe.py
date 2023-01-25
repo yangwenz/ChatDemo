@@ -15,7 +15,7 @@ class LivenessProbe(bootsteps.StartStopStep):
 
     def start(self, worker):
         self.tref = worker.timer.call_repeatedly(
-            1.0, self.update_heartbeat_file, (worker,), priority=10,
+            10.0, self.update_heartbeat_file, (worker,), priority=10,
         )
 
     def stop(self, worker):
