@@ -133,6 +133,10 @@ class TritonModel(BaseModel):
         self.triton_url = os.getenv("TRITON_URL", "localhost:8000")
         self.triton_model_name = os.getenv("TRITON_MODEL_NAME", "fastertransformer")
         self.triton_model_version = os.getenv("TRITON_MODEL_VERSION", "1")
+        logger.info(f"Triton url: {self.triton_url}")
+        logger.info(f"Triton model name: {self.triton_model_name}")
+        logger.info(f"Triton model version: {self.triton_model_version}")
+
         self.client = httpclient.InferenceServerClient(
             self.triton_url, concurrency=1, verbose=False)
 
