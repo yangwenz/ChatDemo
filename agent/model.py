@@ -130,7 +130,10 @@ class TritonModel(BaseModel):
             self.model_path = "togethercomputer/GPT-JT-6B-v1"
         self.tokenizer = AutoTokenizer.from_pretrained(self.model_path)
 
-        self.triton_url = os.getenv("TRITON_URL", "localhost:8000")
+        self.triton_url = "http://{host}:{port}".format(
+            host=os.getenv("TRITON_HOST", "localhost"),
+            port=os.getenv("TRITON_PORT", 8000)
+        )
         self.triton_model_name = os.getenv("TRITON_MODEL_NAME", "fastertransformer")
         self.triton_model_version = os.getenv("TRITON_MODEL_VERSION", "1")
         logger.info(f"Triton url: {self.triton_url}")
