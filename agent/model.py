@@ -192,14 +192,12 @@ class TritonModel(BaseModel):
         ]
         try:
             result = self.client.infer(
-                self.triton_model_name,
-                inputs,
+                model_name=self.triton_model_name,
+                inputs=inputs,
                 model_version=self.triton_model_version
             )
-            output_ids = result.as_numpy("output_ids")[0]
-
-            output_id = output_ids[0]
-            output_text = self.tokenizer.decode(output_id)
+            output_ids = result.as_numpy("output_ids")[0][0]
+            output_text = self.tokenizer.decode(output_ids)
             processed_output_text = self._post_processing(input_text, output_text, question_prefix)
             answer = processed_output_text.split(answer_prefix)[-1].strip()
             return answer
