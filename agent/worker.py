@@ -2,7 +2,7 @@ import os
 import json
 import logging
 from celery import Celery, Task
-from celery.signals import beat_init, worker_ready, worker_shutdown
+from celery.signals import worker_ready, worker_shutdown
 from agent.probe import LivenessProbe, READINESS_FILE
 
 redis_url = "redis://{host}:{port}".format(
