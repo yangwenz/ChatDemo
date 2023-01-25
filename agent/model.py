@@ -144,14 +144,6 @@ class TritonModel(BaseModel):
         t.set_data_from_numpy(x)
         return t
 
-    @staticmethod
-    def _post_processing(input_text, output_text, question_prefix):
-        input_indices = [m.start() for m in re.finditer(question_prefix, input_text)]
-        output_indices = [m.start() for m in re.finditer(question_prefix, output_text)]
-        if len(input_indices) < len(output_indices):
-            output_text = output_text[:output_indices[len(input_indices)]]
-        return output_text
-
     def predict(
             self,
             inputs,
@@ -167,6 +159,8 @@ class TritonModel(BaseModel):
             answer_prefix="Answer:",
             **kwargs
     ):
+        from ml.model import post_processing
+
         input_text = SearchModel.get_model_input(inputs, prompt=prompt, **kwargs)
         input_ids = np.expand_dims(
             self.tokenizer.encode(input_text, verbose=False), axis=0).astype(np.uint32)
@@ -198,7 +192,7 @@ class TritonModel(BaseModel):
             )
             output_ids = result.as_numpy("output_ids")[0][0]
             output_text = self.tokenizer.decode(output_ids)
-            processed_output_text = self._post_processing(input_text, output_text, question_prefix)
+            processed_output_text = post_processing(input_text, output_text, question_prefix)
             answer = processed_output_text.split(answer_prefix)[-1].strip()
             return answer
 
