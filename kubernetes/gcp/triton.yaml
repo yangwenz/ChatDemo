@@ -25,8 +25,8 @@ spec:
       containers:
         - name: chat-triton
           image: "gcr.io/salesforce-research-internal/triton_with_ft:22.12"
-          command: [ "/opt/tritonserver/bin/tritonserver" ]
-          args: [ "--model-repository", "$(FT_MODEL_REPO)" ]
+          command: [ "/bin/sh" ]
+          args: [ "-c", "/opt/tritonserver/bin/tritonserver --model-repository=$(FT_MODEL_REPO)" ]
           resources:
             limits:
               cpu: 8
