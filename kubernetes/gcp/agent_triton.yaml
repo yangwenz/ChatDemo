@@ -40,7 +40,7 @@ spec:
               mountPath: "/export/home"
             - name: sfr-share-pv-wenzhuo-yang
               mountPath: "/export/share"
-        - name: chat-agent
+        - name: chat-agent-celery
           image: "gcr.io/salesforce-research-internal/chatdemo-agent:v6"
           command: [ "/opt/agent/run_celery.sh" ]
           env:
