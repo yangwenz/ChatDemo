@@ -24,7 +24,7 @@ spec:
             claimName: sfr-share-pvc-wenzhuo-yang
       containers:
         - name: chat-agent
-          image: "gcr.io/salesforce-research-internal/chatdemo-agent:v5"
+          image: "gcr.io/salesforce-research-internal/chatdemo-agent:v6"
           command: ["/opt/agent/run_celery.sh"]
           env:
             - name: REDIS_HOST
