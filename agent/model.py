@@ -167,7 +167,13 @@ class TritonModel(BaseModel):
     ):
         from ml.model import post_processing
 
-        input_text = SearchModel.get_model_input(inputs, prompt=prompt, **kwargs)
+        input_text = SearchModel.get_model_input(
+            inputs,
+            question_prefix=question_prefix,
+            answer_prefix=answer_prefix,
+            prompt=prompt,
+            **kwargs
+        )
         input_ids = np.expand_dims(
             self.tokenizer.encode(input_text, verbose=False), axis=0).astype(np.uint32)
 
