@@ -38,4 +38,4 @@ spec:
                 - /bin/bash
                 - -c
                 - /opt/agent/celery_readiness.py
-            initialDelaySeconds: 5
+            initialDelaySeconds: 15
