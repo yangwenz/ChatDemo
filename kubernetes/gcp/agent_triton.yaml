@@ -60,11 +60,6 @@ spec:
               value: "triton"
             - name: MODEL_PATH
               value: "/export/share/wenzhuo/GPT-JT-6B-v1"
-          volumeMounts:
-            - name: sfr-home-pv-wenzhuo-yang
-              mountPath: "/export/home"
-            - name: sfr-share-pv-wenzhuo-yang
-              mountPath: "/export/share"
       nodeSelector:
         cloud.google.com/gke-accelerator: nvidia-tesla-a100
       tolerations:
