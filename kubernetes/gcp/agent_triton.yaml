@@ -26,14 +26,14 @@ spec:
         - name: chat-agent-triton
           image: "gcr.io/salesforce-research-internal/triton_with_ft:22.12"
           command: [ "/opt/tritonserver/bin/tritonserver" ]
-          args: [ "--model-repository", "$(MODEL_PATH)" ]
+          args: [ "--model-repository", "$(FT_MODEL_REPO)" ]
           resources:
             limits:
               cpu: 8
               nvidia.com/gpu: 1
               memory: "32Gi"
           env:
-            - name: MODEL_PATH
+            - name: FT_MODEL_REPO
               value: "/export/share/wenzhuo/GPT-JT-6B-v1-1gpu"
           volumeMounts:
             - name: sfr-home-pv-wenzhuo-yang
