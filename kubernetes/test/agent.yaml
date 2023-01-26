@@ -17,7 +17,7 @@ spec:
       containers:
         - name: chat-agent
           image: "chatdemo-agent:v1"
-          command: ["/opt/agent/run_celery.sh"]
+          command: [ "/opt/agent/run_celery.sh" ]
           env:
             - name: REDIS_HOST
               value: redis-master
@@ -25,3 +25,20 @@ spec:
               value: "blender"
             - name: MODEL_PATH
               value: ""
+          livenessProbe:
+            exec:
+              command:
+                - /bin/bash
+                - "-c"
+                - "python /opt/agent/celery_liveness.py"
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            failureThreshold: 5
+          readinessProbe:
+            exec:
+              command:
+                - /bin/bash
+                - "-c"
+                - "python /opt/agent/celery_readiness.py"
+            initialDelaySeconds: 20
+            failureThreshold: 5

@@ -28,12 +28,12 @@ spec:
             httpGet:
               path: /ping
               port: 8080
-            initialDelaySeconds: 5
+            initialDelaySeconds: 10
           readinessProbe:
             httpGet:
               path: /ping
               port: 8080
-            initialDelaySeconds: 5
+            initialDelaySeconds: 120
 
 ---
 apiVersion: v1
