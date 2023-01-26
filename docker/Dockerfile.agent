@@ -1,5 +1,5 @@
-FROM nvcr.io/nvidia/pytorch:22.08-py3
-# FROM python:3.8-slim
+# FROM nvcr.io/nvidia/pytorch:22.08-py3
+FROM python:3.8-slim
 # FROM pytorch/pytorch:1.13.1-cuda11.6-cudnn8-devel
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
