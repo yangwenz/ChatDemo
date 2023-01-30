@@ -24,6 +24,16 @@ spec:
           env:
             - name: CHATBOT_SERVER_HOST
               value: chat-backend
+          livenessProbe:
+            httpGet:
+              path: /ping
+              port: 8080
+            initialDelaySeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: 8080
+            initialDelaySeconds: 120
 
 ---
 apiVersion: v1

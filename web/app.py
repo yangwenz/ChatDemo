@@ -42,6 +42,11 @@ def update_display(chat_history):
     ]
 
 
+@app.server.route("/ping")
+def ping():
+    return "{status: ok}"
+
+
 if __name__ == "__main__":
     host = os.getenv("HOST", "localhost")
     port = os.getenv("PORT", "8080")

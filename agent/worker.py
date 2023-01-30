@@ -2,6 +2,8 @@ import os
 import json
 import logging
 from celery import Celery, Task
+from celery.signals import worker_ready, worker_shutdown
+from agent.probe import LivenessProbe, READINESS_FILE
 
 redis_url = "redis://{host}:{port}".format(
     host=os.getenv("REDIS_HOST", "localhost"),
@@ -11,6 +13,7 @@ redis_url = "redis://{host}:{port}".format(
 app = Celery(__name__)
 app.conf.broker_url = redis_url
 app.conf.result_backend = redis_url
+app.steps["worker"].add(LivenessProbe)
 
 logging.basicConfig(level="INFO")
 logger = logging.getLogger(__name__)
@@ -61,3 +64,13 @@ def generate_text(self, inputs):
     except Exception as e:
         outputs = f"ERROR: {str(e)}"
     return json.dumps({"generated_text": outputs})
+
+
+@worker_ready.connect
+def worker_ready(**kwargs):
+    READINESS_FILE.touch()
+
+
+@worker_shutdown.connect
+def worker_shutdown(**kwargs):
+    READINESS_FILE.unlink(missing_ok=True)
