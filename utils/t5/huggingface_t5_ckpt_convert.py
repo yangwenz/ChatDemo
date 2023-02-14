@@ -152,7 +152,10 @@ def split_and_convert_process(key, val, factor, saved_dir):
 
 
 def convert_checkpoint(args):
-    saved_dir = Path(args.saved_dir) / f"{args.inference_tensor_para_size:d}-gpu"
+    model_name = os.path.basename(args.in_file)
+    out_path = os.path.join(
+        args.saved_dir, f"{model_name}-{args.inference_tensor_para_size}gpu", "fastertransformer")
+    saved_dir = Path(os.path.join(out_path, f"{args.version}"))
     saved_dir.mkdir(parents=True, exist_ok=True)
 
     if args.encoder_only:
@@ -211,8 +214,10 @@ if __name__ == "__main__":
                         default=4)
     parser.add_argument("-weight_data_type", type=str, default="fp32", choices=["fp32", "fp16"])
     parser.add_argument("--encoder_only", "-e", action="store_true")
+    parser.add_argument("--version", "-v", type=int, help="Model version", default=1)
     parser.add_argument("--verbose", action="store_true", help="Provide verbose messages")
     args = parser.parse_args()
+
     log_format = "%(asctime)s %(name)s [%(levelname)s] %(message)s"
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO, format=log_format)
     LOGGER.info("\n=============== Argument ===============")
