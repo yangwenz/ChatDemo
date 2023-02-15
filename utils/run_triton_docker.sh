@@ -1,0 +1,1 @@
+docker run --gpus=1 --rm -p8000:8000 -p8001:8001 -p8002:8002 -v /home/ywz/data/models/flan-t5-large-1gpu:/models triton_with_ft:22.12 tritonserver --model-repository=/models
