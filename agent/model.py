@@ -213,6 +213,98 @@ class TritonGPTJModel(BaseModel):
             return "Inference server error. Please try again after some time."
 
 
+class TritonT5Model(BaseModel):
+
+    def __init__(self, model_path=None):
+        super().__init__(model_path)
+        if self.model_path is None:
+            self.model_path = "google/flan-t5-large"
+        self.tokenizer = AutoTokenizer.from_pretrained(self.model_path)
+
+        self.triton_url = "{host}:{port}".format(
+            host=os.getenv("TRITON_HOST", "localhost"),
+            port=os.getenv("TRITON_PORT", 8000)
+        )
+        self.triton_model_name = os.getenv("TRITON_MODEL_NAME", "fastertransformer")
+        self.triton_model_version = os.getenv("TRITON_MODEL_VERSION", "1")
+        logger.info(f"Triton url: {self.triton_url}")
+        logger.info(f"Triton model name: {self.triton_model_name}")
+        logger.info(f"Triton model version: {self.triton_model_version}")
+
+        self.client = httpclient.InferenceServerClient(
+            self.triton_url, concurrency=1, verbose=False)
+
+    @staticmethod
+    def _prepare_tensor(name, x):
+        t = httpclient.InferInput(
+            name, x.shape, np_to_triton_dtype(x.dtype))
+        t.set_data_from_numpy(x)
+        return t
+
+    def predict(
+            self,
+            inputs,
+            prompt=None,
+            temperature=0.6,
+            request_output_len=128,
+            topk=1,
+            topp=0,
+            beam_width=1,
+            beam_search_diversity_rate=0.0,
+            len_penalty=1.0,
+            repetition_penalty=1.0,
+            question_prefix="Question:",
+            answer_prefix="Answer:",
+            **kwargs
+    ):
+        input_text = SearchModel.get_model_input(
+            inputs,
+            question_prefix=question_prefix,
+            answer_prefix=answer_prefix,
+            prompt=prompt,
+            **kwargs
+        )
+        input_ids = np.expand_dims(
+            self.tokenizer.encode(input_text, verbose=False), axis=0).astype(np.uint32)
+
+        n = input_ids.shape[0]
+        sequence_length = np.array([[input_ids.shape[1]]], dtype=np.uint32)
+        max_output_len = np.array([[request_output_len]], dtype=np.uint32)
+        runtime_top_k = (topk * np.ones([n, 1])).astype(np.uint32)
+        runtime_top_p = (topp * np.ones([n, 1])).astype(np.float32)
+        temperature = (temperature * np.ones([n, 1])).astype(np.float32)
+        len_penalty = (len_penalty * np.ones([n, 1])).astype(np.float32)
+        repetition_penalty = (repetition_penalty * np.ones([n, 1])).astype(np.float32)
+        beam_width = (beam_width * np.ones([n, 1])).astype(np.uint32)
+        beam_search_diversity_rate = 0.0 * np.ones([n, 1]).astype(np.float32)
+
+        inputs = [
+            self._prepare_tensor("input_ids", input_ids),
+            self._prepare_tensor("sequence_length", sequence_length),
+            self._prepare_tensor("max_output_len", max_output_len),
+            self._prepare_tensor("runtime_top_k", runtime_top_k),
+            self._prepare_tensor("runtime_top_p", runtime_top_p),
+            self._prepare_tensor("temperature", temperature),
+            self._prepare_tensor("len_penalty", len_penalty),
+            self._prepare_tensor("repetition_penalty", repetition_penalty),
+            self._prepare_tensor("beam_width", beam_width),
+            self._prepare_tensor("beam_search_diversity_rate", beam_search_diversity_rate)
+        ]
+        try:
+            result = self.client.infer(
+                model_name=self.triton_model_name,
+                inputs=inputs,
+                model_version=self.triton_model_version
+            )
+            output_ids = result.as_numpy("output_ids")[0][0]
+            answer = self.tokenizer.decode(output_ids)
+            return answer
+
+        except Exception as e:
+            logger.warning(f"Triton inference error: {str(e)}")
+            return "Inference server error. Please try again after some time."
+
+
 class ModelFactory:
 
     @staticmethod
@@ -227,5 +319,7 @@ class ModelFactory:
             return SearchModel
         elif model_cls == "triton":
             return TritonGPTJModel
+        elif model_cls == "t5":
+            return TritonT5Model
         else:
             raise ValueError(f"Unknown model class: {model_cls}")

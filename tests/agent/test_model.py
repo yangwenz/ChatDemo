@@ -1,7 +1,7 @@
 import os
 from agent.model import SearchModel
 from agent.model import GPTJ
-from agent.model import TritonModel
+from agent.model import TritonGPTJModel, TritonT5Model
 
 
 def test_1():
@@ -31,12 +31,20 @@ def test_2():
 
 
 def test_3():
-    model = TritonModel()
+    model = TritonGPTJModel()
     output = model.predict({
         "inputs": {"text": "Hello, how are you?"}
     })
     print(output)
 
 
+def test_4():
+    model = TritonT5Model()
+    output = model.predict({
+        "inputs": {"text": "A step by step recipe to make bolognese pasta"}
+    })
+    print(output)
+
+
 if __name__ == "__main__":
-    test_3()
+    test_4()
