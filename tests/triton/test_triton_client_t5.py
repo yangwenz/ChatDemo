@@ -43,8 +43,6 @@ beam_width = (beam_width * np.ones([n, 1])).astype(np.uint32)
 
 inputs = [
     prepare_tensor("input_ids", input_ids),
-    prepare_tensor("input_lengths", np.array([[input_ids.shape[1]]], dtype=np.uint32)),
-    prepare_tensor("request_output_len", np.array([[64]], dtype=np.uint32)),
     prepare_tensor("runtime_top_k", runtime_top_k),
     prepare_tensor("runtime_top_p", runtime_top_p),
     prepare_tensor("temperature", temperature),
