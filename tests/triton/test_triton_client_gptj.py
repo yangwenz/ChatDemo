@@ -12,7 +12,7 @@ def prepare_tensor(name, input):
     return t
 
 
-# Initizlize client
+# Initialize client
 model_name = "togethercomputer/GPT-JT-6B-v1"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 client = httpclient.InferenceServerClient("localhost:8000", concurrency=1, verbose=False)
