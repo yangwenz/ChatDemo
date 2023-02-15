@@ -35,20 +35,25 @@ return_log_probs = False
 n = input_ids.shape[0]
 runtime_top_k = (topk * np.ones([n, 1])).astype(np.uint32)
 runtime_top_p = (topp * np.ones([n, 1])).astype(np.float32)
+beam_search_diversity_rate = 0.0 * np.ones([n, 1]).astype(np.float32)
 temperature = np.ones([n, 1]).astype(np.float32)
-len_penalty = np.ones([n, 1]).astype(np.float32)
+len_penalty = 0.0 * np.ones([n, 1]).astype(np.float32)
 repetition_penalty = np.ones([n, 1]).astype(np.float32)
 beam_width = (beam_width * np.ones([n, 1])).astype(np.uint32)
+max_output_len = (128 * np.ones([n, 1])).astype(np.uint32)
 
 
 inputs = [
     prepare_tensor("input_ids", input_ids),
+    prepare_tensor("sequence_length", np.array([[input_ids.shape[1]]], dtype=np.uint32)),
     prepare_tensor("runtime_top_k", runtime_top_k),
     prepare_tensor("runtime_top_p", runtime_top_p),
+    prepare_tensor("beam_search_diversity_rate", beam_search_diversity_rate),
     prepare_tensor("temperature", temperature),
     prepare_tensor("len_penalty", len_penalty),
     prepare_tensor("repetition_penalty", repetition_penalty),
     prepare_tensor("beam_width", beam_width),
+    prepare_tensor("max_output_len", max_output_len)
 ]
 
 # Sending request
