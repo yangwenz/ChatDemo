@@ -122,7 +122,7 @@ class SearchModel(BaseModel):
             return outputs
 
 
-class TritonModel(BaseModel):
+class TritonGPTJModel(BaseModel):
 
     def __init__(self, model_path=None):
         super().__init__(model_path)
@@ -226,6 +226,6 @@ class ModelFactory:
         elif model_cls in ["search"]:
             return SearchModel
         elif model_cls == "triton":
-            return TritonModel
+            return TritonGPTJModel
         else:
             raise ValueError(f"Unknown model class: {model_cls}")
