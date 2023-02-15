@@ -13,7 +13,8 @@ def prepare_tensor(name, input):
 
 
 # Initizlize client
-tokenizer = AutoTokenizer.from_pretrained("togethercomputer/GPT-JT-6B-v1")
+model_name = "togethercomputer/GPT-JT-6B-v1"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
 client = httpclient.InferenceServerClient("localhost:8000", concurrency=1, verbose=False)
 
 model_metadata = client.get_model_metadata(model_name="fastertransformer", model_version="1")
