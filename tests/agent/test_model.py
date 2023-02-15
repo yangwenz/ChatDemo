@@ -41,7 +41,7 @@ def test_3():
 def test_4():
     model = TritonT5Model()
     output = model.predict({
-        "inputs": {"text": "A step by step recipe to make bolognese pasta"}
+        "inputs": {"text": "A step by step recipe to make bolognese pasta:"}
     })
     print(output)
 

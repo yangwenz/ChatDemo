@@ -246,15 +246,15 @@ class TritonT5Model(BaseModel):
             inputs,
             prompt=None,
             temperature=0.6,
-            request_output_len=128,
+            request_output_len=256,
             topk=1,
             topp=0,
             beam_width=1,
             beam_search_diversity_rate=0.0,
-            len_penalty=1.0,
+            len_penalty=0.0,
             repetition_penalty=1.0,
-            question_prefix="Question:",
-            answer_prefix="Answer:",
+            question_prefix="",
+            answer_prefix="",
             **kwargs
     ):
         input_text = SearchModel.get_model_input(
@@ -264,6 +264,7 @@ class TritonT5Model(BaseModel):
             prompt=prompt,
             **kwargs
         )
+        input_text = input_text.strip()
         input_ids = np.expand_dims(
             self.tokenizer.encode(input_text, verbose=False), axis=0).astype(np.uint32)
 
@@ -276,7 +277,7 @@ class TritonT5Model(BaseModel):
         len_penalty = (len_penalty * np.ones([n, 1])).astype(np.float32)
         repetition_penalty = (repetition_penalty * np.ones([n, 1])).astype(np.float32)
         beam_width = (beam_width * np.ones([n, 1])).astype(np.uint32)
-        beam_search_diversity_rate = 0.0 * np.ones([n, 1]).astype(np.float32)
+        beam_search_diversity_rate = beam_search_diversity_rate * np.ones([n, 1]).astype(np.float32)
 
         inputs = [
             self._prepare_tensor("input_ids", input_ids),
@@ -297,7 +298,7 @@ class TritonT5Model(BaseModel):
                 model_version=self.triton_model_version
             )
             output_ids = result.as_numpy("output_ids")[0][0]
-            answer = self.tokenizer.decode(output_ids)
+            answer = self.tokenizer.decode(output_ids, skip_special_tokens=True)
             return answer
 
         except Exception as e:
