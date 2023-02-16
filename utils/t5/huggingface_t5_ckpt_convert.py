@@ -158,10 +158,16 @@ def convert_checkpoint(args):
     saved_dir = Path(os.path.join(out_path, f"{args.version}"))
     saved_dir.mkdir(parents=True, exist_ok=True)
 
-    if args.encoder_only:
-        t5_model = T5EncoderModel.from_pretrained(args.in_file)
+    if args.weight_data_type == "fp32":
+        if args.encoder_only:
+            t5_model = T5EncoderModel.from_pretrained(args.in_file)
+        else:
+            t5_model = T5ForConditionalGeneration.from_pretrained(args.in_file)
     else:
-        t5_model = T5ForConditionalGeneration.from_pretrained(args.in_file)
+        if args.encoder_only:
+            t5_model = T5EncoderModel.from_pretrained(args.in_file, torch_dtype=torch.float16)
+        else:
+            t5_model = T5ForConditionalGeneration.from_pretrained(args.in_file, torch_dtype=torch.float16)
 
     config = configparser.ConfigParser()
 
