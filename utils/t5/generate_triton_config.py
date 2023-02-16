@@ -1,12 +1,11 @@
 import os
 import argparse
 from string import Template
-from transformers import GPTJConfig
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 CONFIG_TEMPLATE_PATH = os.path.join(SCRIPT_DIR, "config_template.pbtxt")
 
-parser = argparse.ArgumentParser("Create Triton config files for GPT-J models")
+parser = argparse.ArgumentParser("Create Triton config files for T5 models")
 parser.add_argument("--template", default=CONFIG_TEMPLATE_PATH, help="Path to the config template")
 parser.add_argument("--model_store", required=True, help="Path to the Triton model store")
 parser.add_argument("--hf_model_dir", required=True, help="Path to HF model directory")
@@ -16,7 +15,6 @@ parser.add_argument("-v", "--version", help="Model version", type=int, default=1
 args = parser.parse_args()
 
 args.hf_model_dir = args.hf_model_dir.rstrip("/")
-config = GPTJConfig.from_pretrained(args.hf_model_dir)
 with open(args.template, 'r') as f:
     template = Template(f.read())
 
