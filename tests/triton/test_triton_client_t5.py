@@ -42,6 +42,8 @@ beam_width = (beam_width * np.ones([n, 1])).astype(np.uint32)
 max_output_len = (256 * np.ones([n, 1])).astype(np.uint32)
 start_ids = 0 * np.ones([n, 1]).astype(np.uint32)
 end_ids = 1 * np.ones([n, 1]).astype(np.uint32)
+bad_words_ids = np.array([[[0], [-1]]] * input_ids.shape[0], dtype=np.int32)
+stop_words_ids = np.array([[[0], [-1]]] * input_ids.shape[0], dtype=np.int32)
 
 
 inputs = [
@@ -57,6 +59,8 @@ inputs = [
     prepare_tensor("beam_width", beam_width),
     prepare_tensor("start_id", start_ids),
     prepare_tensor("end_id", end_ids),
+    prepare_tensor("bad_words_list", bad_words_ids),
+    prepare_tensor("stop_words_list", stop_words_ids),
 ]
 
 # Sending request
