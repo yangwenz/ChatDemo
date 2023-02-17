@@ -13,8 +13,7 @@ def prepare_tensor(name, input):
 
 
 # Initialize client
-model_name = "/home/ywz/data/models/flan-t5-large"
-tokenizer = AutoTokenizer.from_pretrained(model_name)
+tokenizer = AutoTokenizer.from_pretrained("t5-11b")
 client = httpclient.InferenceServerClient("localhost:8000", concurrency=1, verbose=False)
 
 model_metadata = client.get_model_metadata(model_name="fastertransformer", model_version="1")
@@ -22,7 +21,7 @@ model_config = client.get_model_config(model_name="fastertransformer", model_ver
 
 # Prepare tokens for sending to the server
 input_text = "A step by step recipe to make bolognese pasta:"
-input_token = tokenizer(input_text, return_tensors="pt", padding=True)
+input_token = tokenizer(input_text, return_tensors="pt")
 input_ids = input_token.input_ids.numpy().astype(np.uint32)
 print(input_ids)
 
