@@ -19,13 +19,11 @@ client = httpclient.InferenceServerClient("localhost:8000", concurrency=1, verbo
 
 model_metadata = client.get_model_metadata(model_name="fastertransformer", model_version="1")
 model_config = client.get_model_config(model_name="fastertransformer", model_version="1")
-print(model_metadata)
-print(model_config)
 
 # Prepare tokens for sending to the server
 input_text = "A step by step recipe to make bolognese pasta:"
-input_ids = np.expand_dims(tokenizer.encode(input_text, verbose=False), axis=0).astype(np.uint32)
-print(input_ids)
+input_token = tokenizer(input_text, return_tensors="pt", padding=True)
+input_ids = input_token.input_ids.numpy().astype(np.uint32)
 
 topk = 5
 topp = 1
@@ -41,6 +39,8 @@ len_penalty = 0.0 * np.ones([n, 1]).astype(np.float32)
 repetition_penalty = np.ones([n, 1]).astype(np.float32)
 beam_width = (beam_width * np.ones([n, 1])).astype(np.uint32)
 max_output_len = (256 * np.ones([n, 1])).astype(np.uint32)
+start_ids = 0 * np.ones([n, 1]).astype(np.uint32)
+end_ids = 1 * np.ones([n, 1]).astype(np.uint32)
 
 
 inputs = [
@@ -53,7 +53,9 @@ inputs = [
     prepare_tensor("temperature", temperature),
     prepare_tensor("len_penalty", len_penalty),
     prepare_tensor("repetition_penalty", repetition_penalty),
-    prepare_tensor("beam_width", beam_width)
+    prepare_tensor("beam_width", beam_width),
+    prepare_tensor("start_id", start_ids),
+    prepare_tensor("end_id", end_ids),
 ]
 
 # Sending request
