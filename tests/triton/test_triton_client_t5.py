@@ -24,6 +24,7 @@ model_config = client.get_model_config(model_name="fastertransformer", model_ver
 input_text = "A step by step recipe to make bolognese pasta:"
 input_token = tokenizer(input_text, return_tensors="pt", padding=True)
 input_ids = input_token.input_ids.numpy().astype(np.uint32)
+print(input_ids)
 
 topk = 5
 topp = 1
